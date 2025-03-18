@@ -1,0 +1,49 @@
+# NetBeans project folder (specific to your local environment)
+nbproject/private/
+nbbuild/
+nbdist/
+build/
+dist/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Temporary files
+*.swp
+*.bak
+*.tmp
+*.swp
+
+# NetBeans user directory
+/.netbeans/
+
+# OS specific files
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# macOS
+.DS_Store
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Java and Maven specific
+target/
+*.jar
+*.war
+*.ear
+*.tar.gz
+*.zip
+
+# Maven wrapper
+.mvn/
