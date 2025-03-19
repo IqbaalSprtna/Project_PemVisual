@@ -38,7 +38,7 @@ public class TestForm extends javax.swing.JFrame {
                 String created_at = rs.getString("created_at");
                 String updated_at = rs.getString("updated_at");
             
-                Object[] rowData = {name,email,pass,role,created_at,updated_at};
+                Object[] rowData = {id, name,email,pass,role,created_at,updated_at};
                 model.addRow(rowData);
             }
             
@@ -86,6 +86,11 @@ public class TestForm extends javax.swing.JFrame {
         });
 
         t_update.setText("Update");
+        t_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_updateActionPerformed(evt);
+            }
+        });
 
         t_riset.setText("Clear");
         t_riset.addActionListener(new java.awt.event.ActionListener() {
@@ -98,15 +103,20 @@ public class TestForm extends javax.swing.JFrame {
 
         table_data.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Name", "Email", "Password", "Role", "Created_at", "Updated_at"
+                "Id", "Name", "Email", "Password", "Role", "Created_at", "Updated_at"
             }
         ));
+        table_data.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_dataMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(table_data);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -227,6 +237,58 @@ public class TestForm extends javax.swing.JFrame {
     private void t_risetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_risetActionPerformed
         resetForm();
     }//GEN-LAST:event_t_risetActionPerformed
+
+    private void t_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_updateActionPerformed
+        int selectedRow = table_data.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih Baris yang Akan di Perbarui!");
+            return;
+        }
+        
+        String id = table_data.getValueAt(selectedRow, 0).toString();
+        String name = t_name.getText();
+        String email = t_email.getText();
+        String password = t_pass.getText();
+        
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua Kolom Harus Terisi!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+                
+        try {   
+            String sql = "UPDATE users SET name=?, password=? WHERE id=?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, password);
+            st.setString(3, id);
+            
+            int rowUpdated = st.executeUpdate();
+            if (rowUpdated > 0) {
+                JOptionPane.showMessageDialog(this, "Data Berhasil Diperbarui!");
+                resetForm();
+                getData();
+            }
+            
+            st.close();
+        } catch (Exception e) {
+            Logger.getLogger(TestForm.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }//GEN-LAST:event_t_updateActionPerformed
+
+    private void table_dataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_dataMouseClicked
+        int selectedRow = table_data.getSelectedRow();
+        if (selectedRow != -1) {
+            String name = table_data.getValueAt(selectedRow, 1).toString();
+            String email = table_data.getValueAt(selectedRow, 2).toString();
+            String pass = table_data.getValueAt(selectedRow, 3).toString();
+            
+            t_name.setText(name);
+            t_email.setText(email);
+            t_pass.setText(pass);
+        }
+        
+        t_email.setEditable(false);
+    }//GEN-LAST:event_table_dataMouseClicked
 
     /**
      * @param args the command line arguments
