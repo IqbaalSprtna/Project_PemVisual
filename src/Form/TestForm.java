@@ -100,6 +100,11 @@ public class TestForm extends javax.swing.JFrame {
         });
 
         t_delet.setText("Delet");
+        t_delet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_deletActionPerformed(evt);
+            }
+        });
 
         table_data.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -289,6 +294,37 @@ public class TestForm extends javax.swing.JFrame {
         
         t_email.setEditable(false);
     }//GEN-LAST:event_table_dataMouseClicked
+
+    private void t_deletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_deletActionPerformed
+        int selectedRow = table_data.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih Baris yang Akan di Perbarui!");
+            return;
+        }
+        
+        int confirm = JOptionPane.showConfirmDialog(this, "Apakah Anda Yakin Ingin Menghapus Data Ini ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            String id = table_data.getValueAt(selectedRow, 0).toString();
+            
+            try {
+                String sql = "DELETE FROM users WHERE id=?";
+                PreparedStatement st = conn.prepareStatement(sql);
+                st.setString(1, id);
+                
+                int rowDeleted = st.executeUpdate();
+                if (rowDeleted > 0) {
+                JOptionPane.showMessageDialog(this, "Data Berhasil Dihapus!");
+                resetForm();
+                getData();
+            }
+            
+            st.close();
+            } catch (Exception e) {
+                Logger.getLogger(TestForm.class.getName()).log(Level.SEVERE, null, e);
+
+            }
+        }
+    }//GEN-LAST:event_t_deletActionPerformed
 
     /**
      * @param args the command line arguments
