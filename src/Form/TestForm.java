@@ -31,14 +31,14 @@ public class TestForm extends javax.swing.JFrame {
             
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String name = rs.getString("name");
+                String nama = rs.getString("nama");
                 String email = rs.getString("email");
                 String pass = rs.getString("password");
                 String role = rs.getString("role");
                 String created_at = rs.getString("created_at");
                 String updated_at = rs.getString("updated_at");
             
-                Object[] rowData = {id, name,email,pass,role,created_at,updated_at};
+                Object[] rowData = {id, nama,email,pass,role,created_at,updated_at};
                 model.addRow(rowData);
             }
             
@@ -261,7 +261,7 @@ public class TestForm extends javax.swing.JFrame {
         }
                 
         try {   
-            String sql = "UPDATE users SET name=?, password=? WHERE id=?";
+            String sql = "UPDATE users SET nama=?, password=? WHERE id=?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, password);
