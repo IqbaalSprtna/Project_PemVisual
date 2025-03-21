@@ -93,7 +93,7 @@ public class tampilanuser extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/logo lingkaran 3 cm snack (1).png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/logo.png"))); // NOI18N
         jLabel11.setText("jLabel11");
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/WhatsApp Image 2025-03-13 at 21.36.19.jpeg"))); // NOI18N
@@ -221,7 +221,7 @@ public class tampilanuser extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -235,6 +235,9 @@ public class tampilanuser extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(tampilanuser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

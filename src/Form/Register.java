@@ -59,13 +59,12 @@ public class Register extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 400));
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Sign Up to Labites");
 
         t_email.setBackground(new java.awt.Color(144, 169, 141));
         t_email.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_email.setForeground(new java.awt.Color(255, 255, 255));
-        t_email.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_email.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_email.setText("Email");
         t_email.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -99,14 +98,13 @@ public class Register extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("We would love to be in touch with you!");
 
         t_username.setBackground(new java.awt.Color(144, 169, 141));
         t_username.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_username.setForeground(new java.awt.Color(255, 255, 255));
-        t_username.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_username.setText("Username");
         t_username.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -125,7 +123,7 @@ public class Register extends javax.swing.JFrame {
         t_pass.setBackground(new java.awt.Color(144, 169, 141));
         t_pass.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_pass.setForeground(new java.awt.Color(255, 255, 255));
-        t_pass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_pass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_pass.setText("Password");
         t_pass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -144,7 +142,7 @@ public class Register extends javax.swing.JFrame {
         t_alamat.setBackground(new java.awt.Color(144, 169, 141));
         t_alamat.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_alamat.setForeground(new java.awt.Color(255, 255, 255));
-        t_alamat.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_alamat.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_alamat.setText("Address");
         t_alamat.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -163,7 +161,7 @@ public class Register extends javax.swing.JFrame {
         t_noHp.setBackground(new java.awt.Color(144, 169, 141));
         t_noHp.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_noHp.setForeground(new java.awt.Color(255, 255, 255));
-        t_noHp.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_noHp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_noHp.setText("Phone Number");
         t_noHp.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -182,7 +180,7 @@ public class Register extends javax.swing.JFrame {
         t_pass2.setBackground(new java.awt.Color(144, 169, 141));
         t_pass2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_pass2.setForeground(new java.awt.Color(255, 255, 255));
-        t_pass2.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_pass2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_pass2.setText("Confirm Password");
         t_pass2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -203,7 +201,7 @@ public class Register extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(64, 64, 64)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -214,10 +212,10 @@ public class Register extends javax.swing.JFrame {
                     .addComponent(t_username)
                     .addComponent(t_pass)
                     .addComponent(t_alamat)
-                    .addComponent(t_noHp)
+                    .addComponent(t_noHp, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(t_pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,7 +233,7 @@ public class Register extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(t_pass2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(t_alamat, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                .addComponent(t_alamat, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(t_noHp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -276,15 +274,15 @@ public class Register extends javax.swing.JFrame {
 
     private void t_emailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_emailFocusGained
         String email = t_email.getText();
-        if (email.equals("EMAIL")) {
+        if (email.equals("Email")) {
             t_email.setText("");
         }
     }//GEN-LAST:event_t_emailFocusGained
 
     private void t_emailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_emailFocusLost
         String email = t_email.getText();
-        if (email.equals("") || email.equals("EMAIL")) {
-            t_email.setText("EMAIL");
+        if (email.equals("") || email.equals("Email")) {
+            t_email.setText("Email");
         }
     }//GEN-LAST:event_t_emailFocusLost
 
@@ -310,7 +308,7 @@ public class Register extends javax.swing.JFrame {
         String no_hp = t_noHp.getText();
         String role = "user";
         
-        if (nama.isEmpty() || nama.equals("USERNAME") || email.isEmpty() || email.equals("EMAIL") || pass.isEmpty() || pass.equals("PASSWORD") || pass2.isEmpty() || pass2.equals("CONFIRM PASSWORD") || alamat.isEmpty() || alamat.equals("ALAMAT") || no_hp.isEmpty() || no_hp.equals("NO HP")) {
+        if (nama.isEmpty() || nama.equals("Username") || email.isEmpty() || email.equals("Username") || pass.isEmpty() || pass.equals("Password") || pass2.isEmpty() || pass2.equals("Confirm Password") || alamat.isEmpty() || alamat.equals("Address") || no_hp.isEmpty() || no_hp.equals("Phone Number")) {
             JOptionPane.showMessageDialog(this, "All column must be filled!", "Warning!", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -366,15 +364,15 @@ public class Register extends javax.swing.JFrame {
 
     private void t_usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_usernameFocusGained
         String username = t_username.getText();
-        if (username.equals("USERNAME")) {
+        if (username.equals("Username")) {
             t_username.setText("");
         }
     }//GEN-LAST:event_t_usernameFocusGained
 
     private void t_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_usernameFocusLost
         String username = t_username.getText();
-        if (username.equals("") || username.equals("USERNAME")) {
-            t_username.setText("USERNAME");
+        if (username.equals("") || username.equals("Username")) {
+            t_username.setText("Username");
         }
     }//GEN-LAST:event_t_usernameFocusLost
 
@@ -384,15 +382,15 @@ public class Register extends javax.swing.JFrame {
 
     private void t_passFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_passFocusGained
         String pass = t_pass.getText();
-        if (pass.equals("PASSWORD")) {
+        if (pass.equals("Password")) {
             t_pass.setText("");
         }
     }//GEN-LAST:event_t_passFocusGained
 
     private void t_passFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_passFocusLost
         String pass = t_pass.getText();
-        if (pass.equals("") || pass.equals("PASSWORD")) {
-            t_pass.setText("PASSWORD");
+        if (pass.equals("") || pass.equals("Password")) {
+            t_pass.setText("Password");
         }
     }//GEN-LAST:event_t_passFocusLost
 
@@ -402,15 +400,15 @@ public class Register extends javax.swing.JFrame {
 
     private void t_alamatFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_alamatFocusGained
         String alamat = t_alamat.getText();
-        if (alamat.equals("ALAMAT")) {
+        if (alamat.equals("Address")) {
             t_alamat.setText("");
         }
     }//GEN-LAST:event_t_alamatFocusGained
 
     private void t_alamatFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_alamatFocusLost
         String alamat = t_alamat.getText();
-        if (alamat.equals("") || alamat.equals("ALAMAT")) {
-            t_alamat.setText("ALAMAT");
+        if (alamat.equals("") || alamat.equals("Address")) {
+            t_alamat.setText("Address");
         }
     }//GEN-LAST:event_t_alamatFocusLost
 
@@ -420,15 +418,15 @@ public class Register extends javax.swing.JFrame {
 
     private void t_noHpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_noHpFocusGained
         String no_hp = t_noHp.getText();
-        if (no_hp.equals("NO HP")) {
+        if (no_hp.equals("Phone Number")) {
             t_noHp.setText("");
         }
     }//GEN-LAST:event_t_noHpFocusGained
 
     private void t_noHpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_noHpFocusLost
         String no_hp = t_noHp.getText();
-        if (no_hp.equals("") || no_hp.equals("NO HP")) {
-            t_noHp.setText("NO HP");
+        if (no_hp.equals("") || no_hp.equals("Phone Number")) {
+            t_noHp.setText("Phone Number");
         }
     }//GEN-LAST:event_t_noHpFocusLost
 
@@ -438,15 +436,15 @@ public class Register extends javax.swing.JFrame {
 
     private void t_pass2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_pass2FocusGained
         String pass = t_pass2.getText();
-        if (pass.equals("CONFIRM PASSWORD")) {
+        if (pass.equals("Confirm Password")) {
             t_pass2.setText("");
         }
     }//GEN-LAST:event_t_pass2FocusGained
 
     private void t_pass2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_pass2FocusLost
         String pass = t_pass2.getText();
-        if (pass.equals("") || pass.equals("PASSWORD")) {
-            t_pass2.setText("CONFIRM PASSWORD");
+        if (pass.equals("") || pass.equals("Confirm Password")) {
+            t_pass2.setText("Confirm Password");
         }
     }//GEN-LAST:event_t_pass2FocusLost
 
