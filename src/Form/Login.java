@@ -63,11 +63,6 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 27)); // NOI18N
         jLabel2.setText("WELCOME TO");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/logo.png"))); // NOI18N
-
-        t_username.setBackground(new java.awt.Color(102, 102, 102));
-        t_username.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        t_username.setForeground(new java.awt.Color(255, 255, 255));
         t_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_username.setText("USERNAME / EMAIL");
         t_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -101,9 +96,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        t_pass.setBackground(new java.awt.Color(102, 102, 102));
-        t_pass.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        t_pass.setForeground(new java.awt.Color(255, 255, 255));
         t_pass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_pass.setText("PASSWORD");
         t_pass.addFocusListener(new java.awt.event.FocusAdapter() {

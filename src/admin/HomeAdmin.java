@@ -21,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.awt.Color;
 
 
 
@@ -29,7 +30,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     
     private Connection conn;
     private String selectedImagePath = "";
-
+    private JLabel selectedLabel = null;
     
     public HomeAdmin() {
         initComponents();
@@ -122,11 +123,11 @@ public class HomeAdmin extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
         btn_dashboard = new javax.swing.JLabel();
         btn_produk = new javax.swing.JLabel();
-        kategori = new javax.swing.JLabel();
-        pesanan = new javax.swing.JLabel();
-        pelanggan = new javax.swing.JLabel();
-        promo = new javax.swing.JLabel();
-        laporan = new javax.swing.JLabel();
+        btn_kategori = new javax.swing.JLabel();
+        btn_pesanan = new javax.swing.JLabel();
+        btn_pelanggan = new javax.swing.JLabel();
+        btn_promo = new javax.swing.JLabel();
+        btn_laporan = new javax.swing.JLabel();
         pn_kanan = new javax.swing.JPanel();
         pn_atas = new javax.swing.JPanel();
         t_userName = new javax.swing.JLabel();
@@ -164,6 +165,11 @@ public class HomeAdmin extends javax.swing.JFrame {
         btn_clearProduk = new javax.swing.JButton();
         btn_deletProduk = new javax.swing.JButton();
         btn_cetakProduk = new javax.swing.JButton();
+        c_kategori = new javax.swing.JPanel();
+        c_pesanan = new javax.swing.JPanel();
+        c_pelanggan = new javax.swing.JPanel();
+        c_promo = new javax.swing.JPanel();
+        c_laporan = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -187,6 +193,9 @@ public class HomeAdmin extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_dashboardMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_dashboardMouseEntered(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_dashboardMouseExited(evt);
             }
@@ -198,22 +207,83 @@ public class HomeAdmin extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_produkMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_produkMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_produkMouseExited(evt);
+            }
+        });
+      
+        btn_kategori.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_kategori.setText("KATEGORI");
+        btn_kategori.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_kategoriMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_kategoriMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_kategoriMouseExited(evt);
+            }
         });
 
-        kategori.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        kategori.setText("CATEGORY");
+        btn_pesanan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_pesanan.setText("PESANAN");
+        btn_pesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_pesananMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_pesananMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_pesananMouseExited(evt);
+            }
+        });
 
-        pesanan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pesanan.setText("ORDER");
+        btn_pelanggan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_pelanggan.setText("PELANGGAN");
+        btn_pelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_pelangganMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_pelangganMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_pelangganMouseExited(evt);
+            }
+        });
 
-        pelanggan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pelanggan.setText("CUSTOMER");
+        btn_promo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_promo.setText("PROMO & DISKON");
+        btn_promo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_promoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_promoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_promoMouseExited(evt);
+            }
+        });
 
-        promo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        promo.setText("PROMO & DISCOUNT");
-
-        laporan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        laporan.setText("REPORT");
+        btn_laporan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_laporan.setText("LAPORAN PENJUALAN");
+        btn_laporan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_laporanMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_laporanMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_laporanMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout pn_kiriLayout = new javax.swing.GroupLayout(pn_kiri);
         pn_kiri.setLayout(pn_kiriLayout);
@@ -222,12 +292,12 @@ public class HomeAdmin extends javax.swing.JFrame {
             .addGroup(pn_kiriLayout.createSequentialGroup()
                 .addGroup(pn_kiriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_produk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(kategori, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pesanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(laporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_kategori, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_pesanan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_laporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_dashboard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pelanggan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(promo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_pelanggan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_promo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pn_kiriLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -243,15 +313,15 @@ public class HomeAdmin extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addComponent(btn_produk, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(kategori, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(promo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_promo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(laporan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_laporan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(647, Short.MAX_VALUE))
         );
 
@@ -425,7 +495,15 @@ public class HomeAdmin extends javax.swing.JFrame {
             new String [] {
                 "id", "id_category", "Nama", "Harga", "Stok", "Deskripsi", "Gambar", "Deleted_at"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tbl_produk);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input Barang", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
@@ -566,27 +644,32 @@ public class HomeAdmin extends javax.swing.JFrame {
             c_produkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_produkLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1))
-            .addGroup(c_produkLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(c_produkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_addProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_updetProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_clearProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_deletProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_cetakProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 1194, Short.MAX_VALUE))
+                .addGroup(c_produkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(c_produkLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addGroup(c_produkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_addProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_updetProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_clearProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_deletProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_cetakProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 1194, Short.MAX_VALUE))
+                    .addGroup(c_produkLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         c_produkLayout.setVerticalGroup(
             c_produkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_produkLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(c_produkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(c_produkLayout.createSequentialGroup()
-                        .addGap(11, 11, 11)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(c_produkLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
                         .addComponent(btn_addProduk)
                         .addGap(18, 18, 18)
                         .addComponent(btn_updetProduk)
@@ -595,12 +678,76 @@ public class HomeAdmin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btn_deletProduk)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_cetakProduk))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btn_cetakProduk)))
                 .addContainerGap(532, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_produk, "c_produk");
+
+        javax.swing.GroupLayout c_kategoriLayout = new javax.swing.GroupLayout(c_kategori);
+        c_kategori.setLayout(c_kategoriLayout);
+        c_kategoriLayout.setHorizontalGroup(
+            c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1795, Short.MAX_VALUE)
+        );
+        c_kategoriLayout.setVerticalGroup(
+            c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1126, Short.MAX_VALUE)
+        );
+
+        pn_utama.add(c_kategori, "c_kategori");
+
+        javax.swing.GroupLayout c_pesananLayout = new javax.swing.GroupLayout(c_pesanan);
+        c_pesanan.setLayout(c_pesananLayout);
+        c_pesananLayout.setHorizontalGroup(
+            c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1795, Short.MAX_VALUE)
+        );
+        c_pesananLayout.setVerticalGroup(
+            c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1126, Short.MAX_VALUE)
+        );
+
+        pn_utama.add(c_pesanan, "c_pesanan");
+
+        javax.swing.GroupLayout c_pelangganLayout = new javax.swing.GroupLayout(c_pelanggan);
+        c_pelanggan.setLayout(c_pelangganLayout);
+        c_pelangganLayout.setHorizontalGroup(
+            c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1795, Short.MAX_VALUE)
+        );
+        c_pelangganLayout.setVerticalGroup(
+            c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1126, Short.MAX_VALUE)
+        );
+
+        pn_utama.add(c_pelanggan, "c_pelanggan");
+
+        javax.swing.GroupLayout c_promoLayout = new javax.swing.GroupLayout(c_promo);
+        c_promo.setLayout(c_promoLayout);
+        c_promoLayout.setHorizontalGroup(
+            c_promoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1795, Short.MAX_VALUE)
+        );
+        c_promoLayout.setVerticalGroup(
+            c_promoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1126, Short.MAX_VALUE)
+        );
+
+        pn_utama.add(c_promo, "c_promo");
+
+        javax.swing.GroupLayout c_laporanLayout = new javax.swing.GroupLayout(c_laporan);
+        c_laporan.setLayout(c_laporanLayout);
+        c_laporanLayout.setHorizontalGroup(
+            c_laporanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1795, Short.MAX_VALUE)
+        );
+        c_laporanLayout.setVerticalGroup(
+            c_laporanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1126, Short.MAX_VALUE)
+        );
+
+        pn_utama.add(c_laporan, "c_laporan");
 
         javax.swing.GroupLayout pn_dasarLayout = new javax.swing.GroupLayout(pn_dasar);
         pn_dasar.setLayout(pn_dasarLayout);
@@ -627,12 +774,22 @@ public class HomeAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_dashboardMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dashboardMouseExited
-        // TODO add your handling code here:
+       if (selectedLabel != btn_dashboard) { 
+            btn_dashboard.setBackground(new Color(240, 240, 240)); // Warna default
+        }
     }//GEN-LAST:event_btn_dashboardMouseExited
 
     private void btn_dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dashboardMouseClicked
         CardLayout ly = (CardLayout)pn_utama.getLayout();
         ly.show(pn_utama, "c_dashboard");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        // Set label yang baru dipilih
+        selectedLabel = btn_dashboard;
+        btn_dashboard.setBackground(new Color(150, 150, 150));
     }//GEN-LAST:event_btn_dashboardMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -642,6 +799,13 @@ public class HomeAdmin extends javax.swing.JFrame {
     private void btn_produkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_produkMouseClicked
         CardLayout ly = (CardLayout)pn_utama.getLayout();
         ly.show(pn_utama, "c_produk");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        selectedLabel = btn_produk;
+        btn_produk.setBackground(new Color(150, 150, 150));      
     }//GEN-LAST:event_btn_produkMouseClicked
 
     private void t_namaProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_namaProdukActionPerformed
@@ -750,6 +914,144 @@ public class HomeAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_pilihGambarActionPerformed
 
+    private void btn_dashboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dashboardMouseEntered
+        btn_dashboard.setOpaque(true); // Pastikan warna latar belakang berubah
+        btn_dashboard.setBackground(new Color(200, 200, 200)); // Warna hover
+        btn_dashboard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_dashboardMouseEntered
+
+    private void btn_produkMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_produkMouseEntered
+        btn_produk.setOpaque(true);
+        btn_produk.setBackground(new Color(200, 200, 200));
+        btn_produk.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_produkMouseEntered
+
+    private void btn_produkMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_produkMouseExited
+        if (selectedLabel != btn_produk) { 
+            btn_produk.setBackground(new Color(240, 240, 240));
+        }
+    }//GEN-LAST:event_btn_produkMouseExited
+
+    private void btn_kategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_kategoriMouseClicked
+        CardLayout ly = (CardLayout)pn_utama.getLayout();
+        ly.show(pn_utama, "c_kategori");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        selectedLabel = btn_kategori;
+        btn_kategori.setBackground(new Color(150, 150, 150));
+    }//GEN-LAST:event_btn_kategoriMouseClicked
+
+    private void btn_kategoriMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_kategoriMouseEntered
+        btn_kategori.setOpaque(true); // Pastikan warna latar belakang berubah
+        btn_kategori.setBackground(new Color(200, 200, 200)); // Warna hover
+        btn_kategori.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_kategoriMouseEntered
+
+    private void btn_kategoriMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_kategoriMouseExited
+        if (selectedLabel != btn_kategori) { 
+            btn_kategori.setBackground(new Color(240, 240, 240));
+        }
+    }//GEN-LAST:event_btn_kategoriMouseExited
+
+    private void btn_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesananMouseClicked
+        CardLayout ly = (CardLayout)pn_utama.getLayout();
+        ly.show(pn_utama, "c_pesanan");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        selectedLabel = btn_pesanan;
+        btn_pesanan.setBackground(new Color(150, 150, 150));
+    }//GEN-LAST:event_btn_pesananMouseClicked
+
+    private void btn_pesananMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesananMouseEntered
+        btn_pesanan.setOpaque(true); // Pastikan warna latar belakang berubah
+        btn_pesanan.setBackground(new Color(200, 200, 200)); // Warna hover
+        btn_pesanan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_pesananMouseEntered
+
+    private void btn_pesananMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesananMouseExited
+        if (selectedLabel != btn_pesanan) { 
+            btn_pesanan.setBackground(new Color(240, 240, 240));
+        }
+    }//GEN-LAST:event_btn_pesananMouseExited
+
+    private void btn_pelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pelangganMouseClicked
+        CardLayout ly = (CardLayout)pn_utama.getLayout();
+        ly.show(pn_utama, "c_pelanggan");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        selectedLabel = btn_pelanggan;
+        btn_pelanggan.setBackground(new Color(150, 150, 150));
+    }//GEN-LAST:event_btn_pelangganMouseClicked
+
+    private void btn_pelangganMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pelangganMouseEntered
+        btn_pelanggan.setOpaque(true); // Pastikan warna latar belakang berubah
+        btn_pelanggan.setBackground(new Color(200, 200, 200)); // Warna hover
+        btn_pelanggan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_pelangganMouseEntered
+
+    private void btn_pelangganMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pelangganMouseExited
+        if (selectedLabel != btn_pelanggan) { 
+            btn_pelanggan.setBackground(new Color(240, 240, 240));
+        }
+    }//GEN-LAST:event_btn_pelangganMouseExited
+
+    private void btn_promoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_promoMouseClicked
+        CardLayout ly = (CardLayout)pn_utama.getLayout();
+        ly.show(pn_utama, "c_pelanggan");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        selectedLabel = btn_promo;
+        btn_promo.setBackground(new Color(150, 150, 150));
+    }//GEN-LAST:event_btn_promoMouseClicked
+
+    private void btn_promoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_promoMouseEntered
+        btn_promo.setOpaque(true); // Pastikan warna latar belakang berubah
+        btn_promo.setBackground(new Color(200, 200, 200)); // Warna hover
+        btn_promo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_promoMouseEntered
+
+    private void btn_promoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_promoMouseExited
+        if (selectedLabel != btn_promo) { 
+            btn_promo.setBackground(new Color(240, 240, 240));
+        }
+    }//GEN-LAST:event_btn_promoMouseExited
+
+    private void btn_laporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_laporanMouseClicked
+        CardLayout ly = (CardLayout)pn_utama.getLayout();
+        ly.show(pn_utama, "c_laporan");
+        
+        if (selectedLabel != null) {
+            selectedLabel.setBackground(new Color(240, 240, 240));
+        }
+        
+        selectedLabel = btn_laporan;
+        btn_laporan.setBackground(new Color(150, 150, 150));
+    }//GEN-LAST:event_btn_laporanMouseClicked
+
+    private void btn_laporanMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_laporanMouseEntered
+        btn_laporan.setOpaque(true); // Pastikan warna latar belakang berubah
+        btn_laporan.setBackground(new Color(200, 200, 200)); // Warna hover
+        btn_laporan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_laporanMouseEntered
+
+    private void btn_laporanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_laporanMouseExited
+        if (selectedLabel != btn_laporan) { 
+            btn_laporan.setBackground(new Color(240, 240, 240));
+        }
+    }//GEN-LAST:event_btn_laporanMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -793,11 +1095,21 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btn_clearProduk;
     private javax.swing.JLabel btn_dashboard;
     private javax.swing.JButton btn_deletProduk;
+    private javax.swing.JLabel btn_kategori;
+    private javax.swing.JLabel btn_laporan;
+    private javax.swing.JLabel btn_pelanggan;
+    private javax.swing.JLabel btn_pesanan;
     private javax.swing.JButton btn_pilihGambar;
     private javax.swing.JLabel btn_produk;
+    private javax.swing.JLabel btn_promo;
     private javax.swing.JButton btn_updetProduk;
     private javax.swing.JPanel c_dashboard;
+    private javax.swing.JPanel c_kategori;
+    private javax.swing.JPanel c_laporan;
+    private javax.swing.JPanel c_pelanggan;
+    private javax.swing.JPanel c_pesanan;
     private javax.swing.JPanel c_produk;
+    private javax.swing.JPanel c_promo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -811,17 +1123,12 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JLabel kategori;
-    private javax.swing.JLabel laporan;
     private javax.swing.JLabel logo;
-    private javax.swing.JLabel pelanggan;
-    private javax.swing.JLabel pesanan;
     private javax.swing.JPanel pn_atas;
     private javax.swing.JPanel pn_dasar;
     private javax.swing.JPanel pn_kanan;
     private javax.swing.JPanel pn_kiri;
     private javax.swing.JPanel pn_utama;
-    private javax.swing.JLabel promo;
     private javax.swing.JComboBox<String> t_catProduk;
     private javax.swing.JTextField t_descProduk;
     private javax.swing.JTextField t_hargaProduk;
@@ -843,5 +1150,4 @@ public class HomeAdmin extends javax.swing.JFrame {
         t_descProduk.setText("");
         btn_pilihGambar.setText("");
     }
-
 }
