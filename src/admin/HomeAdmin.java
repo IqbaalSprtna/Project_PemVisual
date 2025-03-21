@@ -166,7 +166,6 @@ public class HomeAdmin extends javax.swing.JFrame {
         btn_cetakProduk = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1920, 1200));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -194,7 +193,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
 
         btn_produk.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_produk.setText("PRODUK");
+        btn_produk.setText("PRODUCTS");
         btn_produk.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_produkMouseClicked(evt);
@@ -202,19 +201,19 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
 
         kategori.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        kategori.setText("KATEGORI");
+        kategori.setText("CATEGORY");
 
         pesanan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pesanan.setText("PESANAN");
+        pesanan.setText("ORDER");
 
         pelanggan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pelanggan.setText("PELANGGAN");
+        pelanggan.setText("CUSTOMER");
 
         promo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        promo.setText("PROMO & DISKON");
+        promo.setText("PROMO & DISCOUNT");
 
         laporan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        laporan.setText("LAPORAN PENJUALAN");
+        laporan.setText("REPORT");
 
         javax.swing.GroupLayout pn_kiriLayout = new javax.swing.GroupLayout(pn_kiri);
         pn_kiri.setLayout(pn_kiriLayout);

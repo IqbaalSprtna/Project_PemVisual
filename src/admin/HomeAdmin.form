@@ -3,9 +3,6 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1920, 1200]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -116,7 +113,7 @@
         <Component class="javax.swing.JLabel" name="btn_produk">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="PRODUK"/>
+            <Property name="text" type="java.lang.String" value="PRODUCTS"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_produkMouseClicked"/>
@@ -125,31 +122,31 @@
         <Component class="javax.swing.JLabel" name="kategori">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="KATEGORI"/>
+            <Property name="text" type="java.lang.String" value="CATEGORY"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="pesanan">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="PESANAN"/>
+            <Property name="text" type="java.lang.String" value="ORDER"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="pelanggan">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="PELANGGAN"/>
+            <Property name="text" type="java.lang.String" value="CUSTOMER"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="promo">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="PROMO &amp; DISKON"/>
+            <Property name="text" type="java.lang.String" value="PROMO &amp; DISCOUNT"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="laporan">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="LAPORAN PENJUALAN"/>
+            <Property name="text" type="java.lang.String" value="REPORT"/>
           </Properties>
         </Component>
       </SubComponents>
