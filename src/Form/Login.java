@@ -54,9 +54,13 @@ public class Login extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
+=======
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, Short.MAX_VALUE)
+>>>>>>> 8c11370 (update login)
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -67,8 +71,16 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Selamat Datang di Labites");
 
+<<<<<<< HEAD
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/Cake_2.png"))); // NOI18N
 
+=======
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/logo.png"))); // NOI18N
+
+        t_username.setBackground(new java.awt.Color(102, 102, 102));
+        t_username.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_username.setForeground(new java.awt.Color(255, 255, 255));
+>>>>>>> 8c11370 (update login)
         t_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_username.setText("USERNAME / EMAIL");
         t_username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -100,6 +112,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+<<<<<<< HEAD
+=======
+        t_pass.setBackground(new java.awt.Color(102, 102, 102));
+        t_pass.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_pass.setForeground(new java.awt.Color(255, 255, 255));
+>>>>>>> 8c11370 (update login)
         t_pass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_pass.setText("PASSWORD");
         t_pass.addFocusListener(new java.awt.event.FocusAdapter() {
