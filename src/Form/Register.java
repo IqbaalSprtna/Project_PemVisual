@@ -40,7 +40,7 @@ public class Register extends javax.swing.JFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 400));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/foto-login.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/gambar register.jpg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -52,19 +52,21 @@ public class Register extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, Short.MAX_VALUE)
         );
 
-        jPanel2.setBackground(new java.awt.Color(152, 193, 206));
+        jPanel2.setBackground(new java.awt.Color(144, 175, 141));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 400));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Selamat Datang di Labites");
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Sign Up to Labites");
 
-        t_email.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        t_email.setText("EMAIL");
+        t_email.setBackground(new java.awt.Color(144, 169, 141));
+        t_email.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_email.setForeground(new java.awt.Color(255, 255, 255));
+        t_email.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_email.setText("Email");
         t_email.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_emailFocusGained(evt);
@@ -79,6 +81,7 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
+        btn_login.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         btn_login.setText("LOGIN");
         btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +89,7 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
+        btn_register.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         btn_register.setText("REGISTER");
         btn_register.setPreferredSize(new java.awt.Dimension(100, 23));
         btn_register.addActionListener(new java.awt.event.ActionListener() {
@@ -94,12 +98,16 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Isi Data di Bawah Ini");
+        jLabel3.setText("We would love to be in touch with you!");
 
-        t_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        t_username.setText("USERNAME");
+        t_username.setBackground(new java.awt.Color(144, 169, 141));
+        t_username.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_username.setForeground(new java.awt.Color(255, 255, 255));
+        t_username.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_username.setText("Username");
         t_username.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_usernameFocusGained(evt);
@@ -114,8 +122,11 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        t_pass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        t_pass.setText("PASSWORD");
+        t_pass.setBackground(new java.awt.Color(144, 169, 141));
+        t_pass.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_pass.setForeground(new java.awt.Color(255, 255, 255));
+        t_pass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_pass.setText("Password");
         t_pass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_passFocusGained(evt);
@@ -130,8 +141,11 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        t_alamat.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        t_alamat.setText("ALAMAT");
+        t_alamat.setBackground(new java.awt.Color(144, 169, 141));
+        t_alamat.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_alamat.setForeground(new java.awt.Color(255, 255, 255));
+        t_alamat.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_alamat.setText("Address");
         t_alamat.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_alamatFocusGained(evt);
@@ -146,8 +160,11 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        t_noHp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        t_noHp.setText("NO HP");
+        t_noHp.setBackground(new java.awt.Color(144, 169, 141));
+        t_noHp.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_noHp.setForeground(new java.awt.Color(255, 255, 255));
+        t_noHp.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_noHp.setText("Phone Number");
         t_noHp.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_noHpFocusGained(evt);
@@ -162,8 +179,11 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        t_pass2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        t_pass2.setText("CONFIRM PASSWORD");
+        t_pass2.setBackground(new java.awt.Color(144, 169, 141));
+        t_pass2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        t_pass2.setForeground(new java.awt.Color(255, 255, 255));
+        t_pass2.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_pass2.setText("Confirm Password");
         t_pass2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_pass2FocusGained(evt);
@@ -183,46 +203,46 @@ public class Register extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(t_email)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t_email)
                     .addComponent(t_username)
                     .addComponent(t_pass)
                     .addComponent(t_alamat)
                     .addComponent(t_noHp)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(t_pass2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap(88, Short.MAX_VALUE))
+                    .addComponent(t_pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addGap(29, 29, 29)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(t_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(t_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(t_pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(t_pass2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(t_alamat, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(t_noHp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_login)
-                    .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                    .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_login))
+                .addGap(17, 17, 17))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -291,19 +311,19 @@ public class Register extends javax.swing.JFrame {
         String role = "user";
         
         if (nama.isEmpty() || nama.equals("USERNAME") || email.isEmpty() || email.equals("EMAIL") || pass.isEmpty() || pass.equals("PASSWORD") || pass2.isEmpty() || pass2.equals("CONFIRM PASSWORD") || alamat.isEmpty() || alamat.equals("ALAMAT") || no_hp.isEmpty() || no_hp.equals("NO HP")) {
-            JOptionPane.showMessageDialog(this, "Semua Kolom Harus Terisi!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "All column must be filled!", "Warning!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
         // Validasi panjang password maksimal 8 karakter
         if (pass.length() > 8) {
-            JOptionPane.showMessageDialog(this, "Password maksimal 8 karakter!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Max password is 8 characters!", "Warning!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
         // Validasi password harus sama dengan konfirmasi password
         if (!pass.equals(pass2)) {
-            JOptionPane.showMessageDialog(this, "Password tidak sesuai!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Incorect password!", "Warning!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -313,7 +333,7 @@ public class Register extends javax.swing.JFrame {
             checkEmail.setString(1, email);
             ResultSet rs = checkEmail.executeQuery();
             if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Email sudah digunakan!", "Validasi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Email already used!", "Warning!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -328,7 +348,7 @@ public class Register extends javax.swing.JFrame {
             
             int rowInserted = st.executeUpdate();
             if (rowInserted > 0) {
-                JOptionPane.showMessageDialog(this, "Data Berhasil Ditambahkan");
+                JOptionPane.showMessageDialog(this, "Data successfully added!");
                 // Redirect ke Login
                 Login login = new Login();
                 login.setVisible(true);

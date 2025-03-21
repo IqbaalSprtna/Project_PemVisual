@@ -172,7 +172,6 @@ public class HomeAdmin extends javax.swing.JFrame {
         c_laporan = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1920, 1200));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -203,7 +202,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
 
         btn_produk.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_produk.setText("PRODUK");
+        btn_produk.setText("PRODUCTS");
         btn_produk.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_produkMouseClicked(evt);
@@ -215,7 +214,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                 btn_produkMouseExited(evt);
             }
         });
-
+      
         btn_kategori.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btn_kategori.setText("KATEGORI");
         btn_kategori.addMouseListener(new java.awt.event.MouseAdapter() {
