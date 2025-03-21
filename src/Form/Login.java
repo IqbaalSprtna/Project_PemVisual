@@ -52,9 +52,7 @@ public class Login extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -65,9 +63,9 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 27)); // NOI18N
         jLabel2.setText("WELCOME TO");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/logo labites.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/products/logo.png"))); // NOI18N
 
-        t_username.setBackground(new java.awt.Color(144, 169, 141));
+        t_username.setBackground(new java.awt.Color(102, 102, 102));
         t_username.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_username.setForeground(new java.awt.Color(255, 255, 255));
         t_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -103,7 +101,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        t_pass.setBackground(new java.awt.Color(144, 169, 141));
+        t_pass.setBackground(new java.awt.Color(102, 102, 102));
         t_pass.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         t_pass.setForeground(new java.awt.Color(255, 255, 255));
         t_pass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
