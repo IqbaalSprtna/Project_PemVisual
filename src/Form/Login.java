@@ -3,7 +3,6 @@ package Form;
 import Config.Koneksi;
 import admin.HomeAdmin;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.util.logging.Level;
@@ -40,7 +39,7 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 400));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/background_login.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/backgroundd_login.jpg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -60,7 +59,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(142, 173, 141));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 400));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/logo_login.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/logoo_login.png"))); // NOI18N
 
         t_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         t_username.setText("USERNAME / EMAIL");
