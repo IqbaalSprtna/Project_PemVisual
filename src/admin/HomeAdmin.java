@@ -1266,7 +1266,6 @@ JOptionPane.showMessageDialog(this,"Data berhasil disimpan");
     private void bClearKatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClearKatActionPerformed
         tidkategori.setText("");
         tnamakategori.setText("");
-
     }//GEN-LAST:event_bClearKatActionPerformed
 
     private void tblkategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblkategoriMouseClicked
