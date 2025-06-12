@@ -1426,6 +1426,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         talm.setText(d);
         tnohp.setText(e);
         cbStatusPelanggan.setSelectedItem(g);
+        
     }//GEN-LAST:event_tblPelangganMouseClicked
 
     /**
