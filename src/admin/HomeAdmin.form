@@ -882,6 +882,10 @@
                                           <Component id="tidkategori" alignment="2" min="-2" pref="460" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="356" max="-2" attributes="0"/>
+                                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace pref="953" max="32767" attributes="0"/>
                           </Group>
@@ -917,7 +921,9 @@
                                   <Component id="bClearKat" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                                   <Component id="bDeleteKat" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="699" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                              <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="613" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1027,6 +1033,8 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bDeleteKatActionPerformed"/>
                       </Events>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel11">
                     </Component>
                   </SubComponents>
                 </Container>

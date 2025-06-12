@@ -46,7 +46,7 @@ public class HomeAdmin extends javax.swing.JFrame {
          
          getDataProduk();
          loadCategoryToComboBox();
-         kategori();
+         gateDataKategori();
     }
     
     private void getDataProduk() {
@@ -95,7 +95,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     
     private HashMap<String, Integer> categoryMap = new HashMap<>();
     
-    private void kategori(){
+    private void gateDataKategori(){
       Object[] Baris = {"NO", "Nama Kategori"};
       tabmode = new DefaultTableModel(null,Baris);
       tblkategori.setModel(tabmode);
@@ -205,6 +205,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         tcarikategori = new javax.swing.JTextField();
         bcarikategori = new javax.swing.JButton();
         bDeleteKat = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
         c_pesanan = new javax.swing.JPanel();
         c_pelanggan = new javax.swing.JPanel();
         c_promo = new javax.swing.JPanel();
@@ -830,7 +831,10 @@ public class HomeAdmin extends javax.swing.JFrame {
                         .addGap(73, 73, 73)
                         .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(tnamakategori, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tidkategori, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tidkategori, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(c_kategoriLayout.createSequentialGroup()
+                        .addGap(356, 356, 356)
+                        .addComponent(jLabel11)))
                 .addContainerGap(953, Short.MAX_VALUE))
         );
         c_kategoriLayout.setVerticalGroup(
@@ -859,7 +863,9 @@ public class HomeAdmin extends javax.swing.JFrame {
                     .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bClearKat, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bDeleteKat, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(699, Short.MAX_VALUE))
+                .addGap(86, 86, 86)
+                .addComponent(jLabel11)
+                .addContainerGap(613, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_kategori, "c_kategori");
@@ -1235,7 +1241,7 @@ public class HomeAdmin extends javax.swing.JFrame {
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data Berhasil Diubah!");
 
-           kategori();
+           gateDataKategori();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Data Gagal Diubah! " + e, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -1254,7 +1260,7 @@ public class HomeAdmin extends javax.swing.JFrame {
        
        st.executeUpdate();
 JOptionPane.showMessageDialog(this,"Data berhasil disimpan");
- kategori();
+gateDataKategori();
 
    }    catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Gagal menyimpan Kategori!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1279,7 +1285,7 @@ JOptionPane.showMessageDialog(this,"Data berhasil disimpan");
         
     }//GEN-LAST:event_tblkategoriMouseClicked
 
-    private void bcarikategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcarikategoriActionPerformed
+    private void bcarikategoriActionPerformed(java.awt.event.ActionEvent evt) {                                              
         // TODO add your handling code here:
          String keyword = tcarikategori.getText();
 
@@ -1303,31 +1309,35 @@ JOptionPane.showMessageDialog(this,"Data berhasil disimpan");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error saat mencari data: " + e, "Error", JOptionPane.ERROR_MESSAGE);
         }                                
-    }//GEN-LAST:event_bcariActionPerformed
+    }                                     
 
     private void tnamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnamaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tnamaActionPerformed
 
     private void tblPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelangganMouseClicked
-        int bar = tblPelanggan.getSelectedRow();
-        String a = tabmode.getValueAt(bar, 0).toString();
-        String b = tabmode.getValueAt(bar, 1).toString();
-        String c = tabmode.getValueAt(bar, 2).toString();
-        String d = tabmode.getValueAt(bar, 3).toString();
-        String e = tabmode.getValueAt(bar, 4).toString();
-        String f = tabmode.getValueAt(bar, 5).toString();
-        String g = tabmode.getValueAt(bar, 6).toString();
-        String h = tabmode.getValueAt(bar, 7).toString();
-        
-        tidpelanggan.setText(a);
-        tidpelanggan.setEditable(false);
-        tnama.setText(b);
-        talm.setText(d);
-        tnohp.setText(e);
-        cbStatusPelanggan.setSelectedItem(g);
-        
+ 
     }//GEN-LAST:event_tblPelangganMouseClicked
+
+    private void bDeleteKatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteKatActionPerformed
+        // TODO add your handling code here:
+         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialgo", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            String sql = "DELETE FROM categories WHERE id = '" + tidkategori.getText() + "'";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus!");
+                
+                tidkategori.setText("");
+                tnamakategori.setText("");
+                tidkategori.requestFocus();
+                gateDataKategori();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Data Gagal Dihapus!" + e);
+            } 
+        }
+    }//GEN-LAST:event_bDeleteKatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1394,6 +1404,7 @@ JOptionPane.showMessageDialog(this,"Data berhasil disimpan");
     private javax.swing.JPanel c_promo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
