@@ -239,6 +239,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         tblPelanggan = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
         cbStatusPelanggan = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
         c_promo = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         c_laporan = new javax.swing.JPanel();
@@ -1360,7 +1361,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         btn_pilihGambar.setText(g);
     }//GEN-LAST:event_tbl_produkMouseClicked
 
-    private void bcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcariActionPerformed
+    private void bcariActionPerformed(java.awt.event.ActionEvent evt) {                                      
         String keyword = tCariPelanggan.getText();
 
         String sql = "SELECT " +
@@ -1413,23 +1414,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_tblPelangganMouseClicked
 
     private void bDeleteKatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteKatActionPerformed
-        // TODO add your handling code here:
-         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialgo", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            String sql = "DELETE FROM categories WHERE id = '" + tidkategori.getText() + "'";
-            try {
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus!");
-                
-                tidkategori.setText("");
-                tnamakategori.setText("");
-                tidkategori.requestFocus();
-                gateDataKategori();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Data Gagal Dihapus!" + e);
-            } 
-        }
+
     }//GEN-LAST:event_bDeleteKatActionPerformed
 
     /**
@@ -1497,6 +1482,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
