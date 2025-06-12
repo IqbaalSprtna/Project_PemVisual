@@ -1298,27 +1298,36 @@ JOptionPane.showMessageDialog(this,"Data berhasil disimpan");
               
                 String[] data={a,b};
                 tabmode.addRow(data);
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error saat mencari data: " + e, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_bcarikategoriActionPerformed
+            }
 
-    private void bDeleteKatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteKatActionPerformed
-        int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialgo", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            String sql = "DELETE FROM categories WHERE id = '" + tidkategori.getText() + "'";
-            try {
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus!");
-                
-                kategori();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Data Gagal Dihapus!" + e);
-            } 
-        }
-    }//GEN-LAST:event_bDeleteKatActionPerformed
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error saat mencari data: " + e, "Error", JOptionPane.ERROR_MESSAGE);
+        }                                
+    }//GEN-LAST:event_bcariActionPerformed
+
+    private void tnamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnamaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tnamaActionPerformed
+
+    private void tblPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelangganMouseClicked
+        int bar = tblPelanggan.getSelectedRow();
+        String a = tabmode.getValueAt(bar, 0).toString();
+        String b = tabmode.getValueAt(bar, 1).toString();
+        String c = tabmode.getValueAt(bar, 2).toString();
+        String d = tabmode.getValueAt(bar, 3).toString();
+        String e = tabmode.getValueAt(bar, 4).toString();
+        String f = tabmode.getValueAt(bar, 5).toString();
+        String g = tabmode.getValueAt(bar, 6).toString();
+        String h = tabmode.getValueAt(bar, 7).toString();
+        
+        tidpelanggan.setText(a);
+        tidpelanggan.setEditable(false);
+        tnama.setText(b);
+        talm.setText(d);
+        tnohp.setText(e);
+        cbStatusPelanggan.setSelectedItem(g);
+        
+    }//GEN-LAST:event_tblPelangganMouseClicked
 
     /**
      * @param args the command line arguments
