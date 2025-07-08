@@ -61,18 +61,18 @@ FROM
 					</textElement>
 					<text><![CDATA[Jl.karya utama no.28 jakarta selatan]]></text>
 				</staticText>
-				<image>
-					<reportElement x="0" y="0" width="140" height="127" uuid="bafc4f86-095e-4f9f-94de-018ae060e69b"/>
-					<box>
-						<pen lineWidth="1.0"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<imageExpression><![CDATA["C:\\Users\\LENOVO\\OneDrive\\Pictures\\SS\\baru logo.jpg"]]></imageExpression>
-				</image>
 			</elementGroup>
+			<image>
+				<reportElement x="2" y="0" width="142" height="127" uuid="bec2a3e3-f773-454c-815d-6ee207eb70b0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA["C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Project_PemVisual\\src\\images\\assets\\baru logo.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
