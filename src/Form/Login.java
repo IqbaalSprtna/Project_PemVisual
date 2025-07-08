@@ -13,6 +13,7 @@ public class Login extends javax.swing.JFrame {
 
     private Connection conn;
     public static String loggedUser;
+    public static String idUser;
     
     public Login() {
         initComponents();
@@ -172,6 +173,7 @@ try {
     if (rs.next()) {
         String role = rs.getString("role"); // Ambil role dari database
         loggedUser = rs.getString("nama");
+        idUser = rs.getString("id"); // Ambil id user dari database
 
         JOptionPane.showMessageDialog(this, "Login Berhasil!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
 
@@ -180,7 +182,7 @@ try {
             HomeAdmin adminPage = new HomeAdmin();
             adminPage.setVisible(true);
         } else {
-            tampilanuser userPage = new tampilanuser();
+            HomeUser userPage = new HomeUser();
             userPage.setVisible(true);
         }
 
