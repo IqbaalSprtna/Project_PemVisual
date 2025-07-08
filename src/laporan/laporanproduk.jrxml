@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb72b4bc-7a74-4a88-817b-d6f522b667e7">
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     products.`id` AS products_id,
+     products.`category_id` AS products_category_id,
+     products.`nama` AS products_nama,
+     products.`harga` AS products_harga,
+     products.`stok` AS products_stok,
+     products.`deskripsi` AS products_deskripsi,
+     products.`gambar` AS products_gambar,
+     products.`deleted_at` AS products_deleted_at
+FROM
+     `products` products]]>
+	</queryString>
+	<field name="products_id" class="java.lang.Integer"/>
+	<field name="products_category_id" class="java.lang.Integer"/>
+	<field name="products_nama" class="java.lang.String"/>
+	<field name="products_harga" class="java.math.BigDecimal"/>
+	<field name="products_stok" class="java.lang.Integer"/>
+	<field name="products_deskripsi" class="java.lang.String"/>
+	<field name="products_gambar" class="java.lang.String"/>
+	<field name="products_deleted_at" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
