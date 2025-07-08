@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,47 +18,75 @@ import java.sql.Statement;
  * @author Irfan
  */
 public class keranjang extends javax.swing.JFrame {
- private DefaultTableModel tabmode;
+    private DefaultTableModel tabmode;
     private Connection conn;
-    /**
-     * Creates new form keranjang
-     */
+
     public keranjang() {
        initComponents();
         setTitle("Keranjang Belanja - LABITES");
         setLocationRelativeTo(null);
         conn = Koneksi.getConnection(); // pastikan class koneksi ada
         tablekeranjang();
+        hitungTotalCart();
     }
     
-     protected void tablekeranjang() {
-    Object[] Baris = {"ID", "User ID", "Product ID", "Jumlah"};
-    DefaultTableModel tabmode = new DefaultTableModel(null, Baris);
-    tblcart.setModel(tabmode);
+    protected void tablekeranjang() {
+        Object[] Baris = {"ID", "User ID", "Nama Produk", "Harga Satuan", "Jumlah"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tblcart.setModel(tabmode);
 
-    String sql = "SELECT id, user_id, product_id, jumlah FROM cart";
+        String sql = "SELECT cart.id, cart.user_id, cart.product_id, products.nama, products.harga, cart.jumlah " +
+                     "FROM cart JOIN products ON cart.product_id = products.id";
 
-    try {
-       Statement stat = conn.createStatement();
+        try {
+            Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
 
+            while (hasil.next()) {
+                String id = String.valueOf(hasil.getInt("id"));
+                String userId = String.valueOf(hasil.getInt("user_id"));
+                String namaProduk = String.valueOf(hasil.getString("nama"));
+                String hargaSatuan = String.valueOf(hasil.getInt("harga"));
+                String jumlah = String.valueOf(hasil.getInt("jumlah"));
 
-        while (hasil.next()) {
-            String id = String.valueOf(hasil.getInt("id"));
-            String userId = String.valueOf(hasil.getInt("user_id"));
-            String productId = String.valueOf(hasil.getInt("product_id"));
-            String jumlah = String.valueOf(hasil.getInt("jumlah"));
+                String[] data = {id, userId, namaProduk, hargaSatuan, jumlah};
+                tabmode.addRow(data);
+            }
 
-            String[] data = {id, userId, productId, jumlah};
-            tabmode.addRow(data);
-        }
-
-        hasil.close();
-        stat.close();
+            hasil.close();
+            stat.close();
        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Gagal menampilkan data keranjang: " + e.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal menampilkan data keranjang: " + e.getMessage());
+        }
     }
+    
+    protected void hitungTotalCart() {
+        try {
+            String sql = "SELECT SUM(cart.jumlah * products.harga) AS total " +
+                         "FROM cart JOIN products ON cart.product_id = products.id";
+
+            Statement stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+
+            if (rs.next()) {
+                int total = rs.getInt("total");
+                totalcart.setText(String.valueOf(total));
+            } else {
+                totalcart.setText("0");
+            }
+
+            rs.close();
+            stat.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal menghitung total cart: " + e.getMessage());
+        }
+    }
+
+    protected void kosongkanForm() {
+        tIdCart.setText("");
+        tCartProduk.setText("");
+        tQty.setValue(0);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -85,15 +114,20 @@ public class keranjang extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        id = new javax.swing.JTextField();
-        produk = new javax.swing.JTextField();
-        qty = new javax.swing.JSpinner();
+        tIdCart = new javax.swing.JTextField();
+        tQty = new javax.swing.JSpinner();
+        tCartProduk = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 204));
 
-        btnbayar.setText("Bayar Sekarang");
+        btnbayar.setText("Pesan Sekarang");
+        btnbayar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbayarActionPerformed(evt);
+            }
+        });
 
         btnkembali.setText("Kembali Belanja");
         btnkembali.addActionListener(new java.awt.event.ActionListener() {
@@ -108,25 +142,19 @@ public class keranjang extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnkembali, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnbayar)
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(455, Short.MAX_VALUE)
-                    .addComponent(btnkembali, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(127, 127, 127)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnbayar, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnbayar, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                    .addComponent(btnkembali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(btnkembali, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
 
         tblcart.setModel(new javax.swing.table.DefaultTableModel(
@@ -148,6 +176,9 @@ public class keranjang extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblcart);
 
         jLabel3.setText("Total       : ");
+
+        totalcart.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        totalcart.setEnabled(false);
 
         btnupdate.setText("Update ");
         btnupdate.addActionListener(new java.awt.event.ActionListener() {
@@ -203,49 +234,43 @@ public class keranjang extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(142, 173, 141));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/assets/text_labites.png"))); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Marcellus SC", 1, 29)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Keranjang Belanja");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(203, 203, 203))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(282, 282, 282)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
 
-        id.addActionListener(new java.awt.event.ActionListener() {
+        tIdCart.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        tIdCart.setEnabled(false);
+        tIdCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idActionPerformed(evt);
+                tIdCartActionPerformed(evt);
             }
         });
 
-        produk.setForeground(new java.awt.Color(204, 204, 204));
-        produk.setText("\" Klik Barang Diatas yang Ingin di Tambah \"");
-        produk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                produkActionPerformed(evt);
-            }
-        });
+        tQty.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+
+        tCartProduk.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        tCartProduk.setEnabled(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -253,21 +278,22 @@ public class keranjang extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(produk, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(tIdCart, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(tCartProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tQty, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(produk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(tQty)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tIdCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tCartProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -276,48 +302,45 @@ public class keranjang extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalcart, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1147, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(totalcart, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnupdate, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
-                    .addComponent(btnhapus, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
-                .addGap(23, 23, 23)
+                    .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE)
+                    .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(totalcart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -325,28 +348,120 @@ public class keranjang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnkembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkembaliActionPerformed
-        // TODO add your handling code here:
+        new HomeUser().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnkembaliActionPerformed
 
     private void tblcartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblcartMouseClicked
-        // TODO add your handling code here:
+       int bar = tblcart.getSelectedRow();
+        String a = tabmode.getValueAt(bar, 0).toString();
+        String b = tabmode.getValueAt(bar, 1).toString();
+        String c = tabmode.getValueAt(bar, 2).toString();
+        String d = tabmode.getValueAt(bar, 3).toString();
+        String e = tabmode.getValueAt(bar, 4).toString();
+        
+        tIdCart.setText(a);
+        tCartProduk.setText(c);
+        tQty.setValue(Integer.parseInt(e));
+        
     }//GEN-LAST:event_tblcartMouseClicked
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        // TODO add your handling code here:
+        String idCart = tIdCart.getText();
+        String namaProduk = tCartProduk.getText().toString();
+        int jumlah = (int) tQty.getValue();
+
+        // Ambil product_id berdasarkan namaProduk
+        int productId = -1;
+
+        try {
+            String sql = "SELECT id FROM products WHERE nama = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, namaProduk);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+               productId = rs.getInt("id");
+            } else {
+                JOptionPane.showMessageDialog(null, "Produk tidak ditemukan di database.");
+                return;
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal mendapatkan ID produk: " + e.getMessage());
+            return;
+        }
+    
+        try {
+            String sql = "UPDATE cart SET product_id = ?, jumlah = ? WHERE id = ?";
+            PreparedStatement psUpdate = conn.prepareStatement(sql);
+            psUpdate.setInt(1, productId);
+            psUpdate.setInt(2, jumlah);
+            psUpdate.setInt(3, Integer.parseInt(idCart));
+
+            int hasil = psUpdate.executeUpdate();
+            if (hasil > 0) {
+                JOptionPane.showMessageDialog(null, "Cart berhasil diupdate!");
+                tablekeranjang(); // Refresh tabel
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal mengupdate cart.");
+            }
+
+            psUpdate.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Kesalahan saat update: " + e.getMessage());
+        }
+        
+        hitungTotalCart();
+        tablekeranjang();
     }//GEN-LAST:event_btnupdateActionPerformed
 
     private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
-        // TODO add your handling code here:
+        String idCart = tIdCart.getText();
+
+        if (idCart.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pilih data cart yang ingin dihapus.");
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(null, 
+                "Yakin ingin menghapus item ini dari keranjang?", 
+                "Konfirmasi Hapus", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            try {
+                String sql = "DELETE FROM cart WHERE id = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(idCart));
+
+                int hasil = ps.executeUpdate();
+                if (hasil > 0) {
+                    JOptionPane.showMessageDialog(null, "Item berhasil dihapus dari cart.");
+                    tablekeranjang();   
+                    hitungTotalCart(); 
+                    kosongkanForm();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Gagal menghapus item.");
+                }
+
+                ps.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Kesalahan saat menghapus: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnhapusActionPerformed
 
-    private void idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActionPerformed
+    private void tIdCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIdCartActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_idActionPerformed
+    }//GEN-LAST:event_tIdCartActionPerformed
 
-    private void produkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produkActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_produkActionPerformed
+    private void btnbayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbayarActionPerformed
+       new OrderForm().setVisible(true);
+       this.dispose(); 
+    }//GEN-LAST:event_btnbayarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -388,7 +503,6 @@ public class keranjang extends javax.swing.JFrame {
     private javax.swing.JButton btnhapus;
     private javax.swing.JButton btnkembali;
     private javax.swing.JButton btnupdate;
-    private javax.swing.JTextField id;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -400,8 +514,9 @@ public class keranjang extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField produk;
-    private javax.swing.JSpinner qty;
+    private javax.swing.JTextField tCartProduk;
+    private javax.swing.JTextField tIdCart;
+    private javax.swing.JSpinner tQty;
     private javax.swing.JTable tblcart;
     private javax.swing.JTextField totalcart;
     // End of variables declaration//GEN-END:variables

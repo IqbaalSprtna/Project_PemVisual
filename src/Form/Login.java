@@ -227,12 +227,15 @@ try {
     }//GEN-LAST:event_t_passFocusLost
 
     private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed
-        // Redirect ke Register
-            Register register = new Register();
-            register.setVisible(true);
-            
-            // Tutup halaman login
-            this.dispose();
+        JOptionPane.showMessageDialog(this, 
+        "Jika Anda ingin mendaftar,\nsilakan hubungi nomor admin di bawah ini:\n\n📞 0812-3456-7890", 
+        "Informasi Pendaftaran", 
+        JOptionPane.INFORMATION_MESSAGE);
+// Redirect ke Register
+//        Register register = new Register();
+//        register.setVisible(true);
+//            
+//        this.dispose();
     }//GEN-LAST:event_btn_registerActionPerformed
 
     /**
