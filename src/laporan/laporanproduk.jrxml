@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb72b4bc-7a74-4a88-817b-d6f522b667e7">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="80"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT
      products.`id` AS products_id,
@@ -63,15 +63,8 @@ FROM
 				</staticText>
 			</elementGroup>
 			<image>
-				<reportElement x="2" y="0" width="142" height="127" uuid="bec2a3e3-f773-454c-815d-6ee207eb70b0"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<imageExpression><![CDATA["C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Project_PemVisual\\src\\images\\assets\\baru logo.jpg"]]></imageExpression>
+				<reportElement x="2" y="0" width="126" height="127" uuid="e48d1c17-3602-46cb-b6db-897531f980c4"/>
+				<imageExpression><![CDATA["C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\Project_PemVisual\\src\\images\\assets\\baru logo.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -244,14 +237,26 @@ FROM
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="96" splitType="Stretch">
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="455" y="0" width="100" height="20" uuid="3538782e-87a4-4700-ac06-2b8e5c465f74"/>
+				<reportElement x="452" y="0" width="103" height="20" uuid="31d34567-8458-4fc5-a50e-807c9293860d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="397" y="0" width="58" height="20" uuid="64f7fc9a-3be7-42b4-b2d9-00bcad42b001"/>
-				<text><![CDATA[JAKARTA,]]></text>
+				<reportElement x="413" y="0" width="39" height="20" uuid="5b877930-9ea3-47b9-9b28-fa34d23e9958"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jakarta,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="56" width="103" height="20" uuid="1d4d9cc8-4e3f-4f9c-9a62-17fca7fb70ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(		)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="76" width="103" height="20" uuid="72034395-4246-4590-a849-feefbf91d86b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Admin Labites]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
