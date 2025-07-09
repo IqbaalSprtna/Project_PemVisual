@@ -42,6 +42,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     private String selectedImagePath = "";
     private JLabel selectedLabel = null;
     private DefaultTableModel tabmode;
+    private String selectedFileName = "";
 
     
     public HomeAdmin() {
@@ -111,6 +112,18 @@ public class HomeAdmin extends javax.swing.JFrame {
         }
     }
     
+    private void clearFormProduk() {
+        t_idProduk.setText("");
+        t_idProduk.setEnabled(true);
+        t_catProduk.setSelectedIndex(0);
+        t_namaProduk.setText("");
+        t_hargaProduk.setText("");
+        t_stokProduk.setText("");
+        t_descProduk.setText("");
+        btn_pilihGambar.setText("Pilih Gambar");
+        t_idProduk.requestFocus();
+    }
+    
     private HashMap<String, Integer> categoryMap = new HashMap<>();
     
     private void loadCategoryToComboBox() {
@@ -136,51 +149,66 @@ public class HomeAdmin extends javax.swing.JFrame {
         }
     }
     
+    private String getCategoryNameById(int id) {
+        for (Map.Entry<String, Integer> entry : categoryMap.entrySet()) {
+            if (entry.getValue() == id) {
+                return entry.getKey(); // nama kategori
+            }
+        }
+        return null;
+    }
+    
     protected void tablePelanggan() {
+        tablePelanggan(""); // Panggil versi dengan parameter, tapi kosong
+    }
+    private void tablePelanggan(String keyword) {
         Object[] Baris = {"ID Pelanggan", "Nama Pelanggan", "Email", "Alamat", "NO HP", "ID Order", "Status", "Tanggal Pemesanan"};
         tabmode = new DefaultTableModel(null, Baris);
         tblPelanggan.setModel(tabmode);
-    
-        String sql = "SELECT " +
-                 "u.id AS id_pelanggan, " +
-                 "u.nama, " +
-                 "u.email, " +
-                 "u.alamat, " +
-                 "u.no_hp, " +
-                 "o.id AS id_order, " +
-                 "o.status, " +
-                 "o.tanggal_pemesanan " +
-                 "FROM users u " +
-                 "JOIN orders o ON u.id = o.user_id";
-    
-        try {
-            java.sql.Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while (hasil.next()) {
-                String a = hasil.getString("id_pelanggan");
-                String b = hasil.getString("nama");
-                String c = hasil.getString("email");
-                String d = hasil.getString("alamat");
-                String e = hasil.getString("no_hp");
-                String f = hasil.getString("id_order");
-                String g = hasil.getString("status");
-                String h = hasil.getString("tanggal_pemesanan");
 
-                String[] data = {a, b, c, d, e, f, g, h};
-                tabmode.addRow(data);
+        String sql = "SELECT u.id AS id_pelanggan, u.nama, u.email, u.alamat, u.no_hp, " +
+                     "o.id AS id_order, o.status, o.tanggal_pemesanan " +
+                     "FROM users u JOIN orders o ON u.id = o.user_id ";
+
+        if (keyword != null && !keyword.isEmpty()) {
+            sql += "WHERE CAST(o.id AS CHAR) LIKE ? OR u.nama LIKE ? OR o.tanggal_pemesanan LIKE ?";
+        }
+
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+            if (keyword != null && !keyword.isEmpty()) {
+                String like = "%" + keyword + "%";
+                stat.setString(1, like);
+                stat.setString(2, like);
+                stat.setString(3, like);
+            }
+
+            ResultSet hasil = stat.executeQuery();
+            while (hasil.next()) {
+                String[] data = {
+                hasil.getString("id_pelanggan"),
+                hasil.getString("nama"),
+                hasil.getString("email"),
+                hasil.getString("alamat"),
+                hasil.getString("no_hp"),
+                hasil.getString("id_order"),
+                hasil.getString("status"),
+                hasil.getString("tanggal_pemesanan")
+                };
+            tabmode.addRow(data);
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Sangat penting untuk debugging
+            JOptionPane.showMessageDialog(null, "Gagal load data pelanggan: " + e.getMessage());
         }
     }
     
     protected void clearPelanggan() {
-        tidpelanggan.setText("");
-        tnama.setText("");
-        talm.setText("");
-        tnohp.setText("");
-        cbStatusPelanggan.setSelectedIndex(0);
-        tidpelanggan.setEnabled(true);
+        tIdPesanan.setText("");
+        tNamaPesanan.setText("");
+        tAlamatPesanan.setText("");
+        tNoHpPesanan.setText("");
+        cbStatusPesanan.setSelectedIndex(0);
+        tIdPesanan.setEnabled(true);
     }
     
     protected void getDataKategori() {
@@ -337,16 +365,8 @@ public class HomeAdmin extends javax.swing.JFrame {
         pn_dasar = new javax.swing.JPanel();
         pn_utama = new javax.swing.JPanel();
         c_dashboard = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        ttl_produk = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        ttl_pesanan = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        ttl_income = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tbl_produk2 = new javax.swing.JTable();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tbl_order = new javax.swing.JTable();
+        jLabel43 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
         c_produk = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -381,9 +401,6 @@ public class HomeAdmin extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         tidkategori = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
-        tcarikategori = new javax.swing.JTextField();
-        bcarikategori = new javax.swing.JButton();
         bDeleteKat = new javax.swing.JButton();
         c_pelanggan = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -419,19 +436,19 @@ public class HomeAdmin extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        talm = new javax.swing.JTextField();
-        tnohp = new javax.swing.JTextField();
-        tnama = new javax.swing.JTextField();
-        tidpelanggan = new javax.swing.JTextField();
+        tAlamatPesanan = new javax.swing.JTextField();
+        tNoHpPesanan = new javax.swing.JTextField();
+        tNamaPesanan = new javax.swing.JTextField();
+        tIdPesanan = new javax.swing.JTextField();
         bEditPelanggan = new javax.swing.JButton();
         bClearPelanggan = new javax.swing.JButton();
-        bcari = new javax.swing.JButton();
-        tCariPelanggan = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblPelanggan = new javax.swing.JTable();
+        tCariPesanan = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        cbStatusPelanggan = new javax.swing.JComboBox<>();
+        cbStatusPesanan = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblPelanggan = new javax.swing.JTable();
+        btnCariPesanan = new javax.swing.JButton();
         c_promo = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tbl_promo = new javax.swing.JTable();
@@ -480,6 +497,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         bdelete_pp = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         table_pp = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         c_laporan = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
 
@@ -672,127 +690,33 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         c_dashboard.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total Produk", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        jLabel43.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel43.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel43.setText("SELAMAT DATANG DI MENU ADMIN");
 
-        ttl_produk.setText("10");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(ttl_produk)
-                .addContainerGap(104, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(ttl_produk)
-                .addContainerGap(50, Short.MAX_VALUE))
-        );
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total Pesanan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
-
-        ttl_pesanan.setText("10");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(ttl_pesanan)
-                .addContainerGap(104, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(ttl_pesanan)
-                .addContainerGap(51, Short.MAX_VALUE))
-        );
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pendapatan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
-
-        ttl_income.setText("10");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(ttl_income)
-                .addContainerGap(107, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(ttl_income)
-                .addContainerGap(50, Short.MAX_VALUE))
-        );
-
-        tbl_produk2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane3.setViewportView(tbl_produk2);
-
-        tbl_order.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane4.setViewportView(tbl_order);
+        jLabel44.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel44.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel44.setText("SILAKAN PILIH MENU DI SAMPING UNTUK MEMULAI");
 
         javax.swing.GroupLayout c_dashboardLayout = new javax.swing.GroupLayout(c_dashboard);
         c_dashboard.setLayout(c_dashboardLayout);
         c_dashboardLayout.setHorizontalGroup(
             c_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_dashboardLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addContainerGap()
                 .addGroup(c_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, c_dashboardLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(c_dashboardLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1582, Short.MAX_VALUE))
+                    .addComponent(jLabel43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel44, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
+                .addContainerGap(1429, Short.MAX_VALUE))
         );
         c_dashboardLayout.setVerticalGroup(
             c_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_dashboardLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(c_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
-                .addGroup(c_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(93, 93, 93)
+                .addComponent(jLabel43, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1207, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_dashboard, "c_dashboard");
@@ -944,10 +868,25 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
 
         btn_clearProduk.setText("CLEAR");
+        btn_clearProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clearProdukActionPerformed(evt);
+            }
+        });
 
         btn_deletProduk.setText("DELETE");
+        btn_deletProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deletProdukActionPerformed(evt);
+            }
+        });
 
         btn_cetakProduk.setText("CETAK");
+        btn_cetakProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cetakProdukActionPerformed(evt);
+            }
+        });
 
         tbl_produk.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1063,15 +1002,6 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         tidkategori.setEnabled(false);
 
-        jLabel21.setText("pencarian kategori");
-
-        bcarikategori.setText("cari");
-        bcarikategori.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bcarikategoriActionPerformed(evt);
-            }
-        });
-
         bDeleteKat.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         bDeleteKat.setText("Delete");
         bDeleteKat.addActionListener(new java.awt.event.ActionListener() {
@@ -1088,63 +1018,54 @@ public class HomeAdmin extends javax.swing.JFrame {
                 .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(c_kategoriLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 827, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(c_kategoriLayout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addGap(114, 114, 114)
-                                .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(bedit, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(bClearKat, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(bDeleteKat, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel20))
+                                .addGap(73, 73, 73)
+                                .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tidkategori)
+                                    .addComponent(tnamakategori)))))
                     .addGroup(c_kategoriLayout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jLabel21)
-                        .addGap(50, 50, 50)
-                        .addComponent(tcarikategori, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(223, 223, 223)
+                        .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(bcarikategori))
-                    .addGroup(c_kategoriLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel20))
-                        .addGap(73, 73, 73)
-                        .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(tnamakategori, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tidkategori, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1502, Short.MAX_VALUE))
+                        .addComponent(bedit, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(bClearKat, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(bDeleteKat, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(1493, Short.MAX_VALUE))
         );
         c_kategoriLayout.setVerticalGroup(
             c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_kategoriLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(tcarikategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bcarikategori))
-                .addGap(41, 41, 41)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
-                .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tidkategori, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel15)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tnamakategori, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
-                .addGap(46, 46, 46)
+                .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(c_kategoriLayout.createSequentialGroup()
+                        .addGap(257, 257, 257)
+                        .addComponent(jLabel15))
+                    .addGroup(c_kategoriLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tidkategori, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20))
+                        .addGap(25, 25, 25)
+                        .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tnamakategori, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13))))
+                .addGap(26, 26, 26)
                 .addGroup(c_kategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bedit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bClearKat, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bDeleteKat, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(1062, Short.MAX_VALUE))
+                .addContainerGap(1138, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_kategori, "c_kategori");
@@ -1252,8 +1173,8 @@ public class HomeAdmin extends javax.swing.JFrame {
             c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_pelangganLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 1163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(c_pelangganLayout.createSequentialGroup()
                         .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(c_pelangganLayout.createSequentialGroup()
@@ -1297,7 +1218,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                             .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(btnCetakCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(1166, Short.MAX_VALUE))
+                .addContainerGap(1402, Short.MAX_VALUE))
         );
         c_pelangganLayout.setVerticalGroup(
             c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1343,13 +1264,13 @@ public class HomeAdmin extends javax.swing.JFrame {
                             .addComponent(tCPasswordPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(29, 29, 29)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCetakCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnEditCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCetakCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(901, 901, 901))
         );
 
@@ -1367,15 +1288,21 @@ public class HomeAdmin extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("No HP");
 
-        tnohp.addActionListener(new java.awt.event.ActionListener() {
+        tNoHpPesanan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnohpActionPerformed(evt);
+                tNoHpPesananActionPerformed(evt);
             }
         });
 
-        tnama.addActionListener(new java.awt.event.ActionListener() {
+        tNamaPesanan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tnamaActionPerformed(evt);
+                tNamaPesananActionPerformed(evt);
+            }
+        });
+
+        tIdPesanan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tIdPesananActionPerformed(evt);
             }
         });
 
@@ -1395,13 +1322,10 @@ public class HomeAdmin extends javax.swing.JFrame {
             }
         });
 
-        bcari.setText("CARI");
-        bcari.setPreferredSize(new java.awt.Dimension(150, 29));
-        bcari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bcariActionPerformed(evt);
-            }
-        });
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setText("Status");
+
+        cbStatusPesanan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Status Pemesanan --", "menunggu_pembayaran", "diproses", "dikirim", "selesai" }));
 
         tblPelanggan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1419,12 +1343,14 @@ public class HomeAdmin extends javax.swing.JFrame {
                 tblPelangganMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblPelanggan);
+        jScrollPane10.setViewportView(tblPelanggan);
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel11.setText("Status");
-
-        cbStatusPelanggan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Status Pemesanan --", "menunggu_pembayaran", "diproses", "dikirim", "selesai" }));
+        btnCariPesanan.setText("Cari");
+        btnCariPesanan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariPesananActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout c_pesananLayout = new javax.swing.GroupLayout(c_pesanan);
         c_pesanan.setLayout(c_pesananLayout);
@@ -1434,63 +1360,72 @@ public class HomeAdmin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(c_pesananLayout.createSequentialGroup()
-                        .addComponent(tCariPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(bcari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(c_pesananLayout.createSequentialGroup()
                         .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
+                            .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(c_pesananLayout.createSequentialGroup()
+                                    .addComponent(tCariPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnCariPesanan, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)))
                             .addGroup(c_pesananLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(30, 30, 30)
                                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel11))
-                                .addGap(56, 56, 56)
-                                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cbStatusPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tIdPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tNamaPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(c_pesananLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(113, 113, 113)
+                                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(c_pesananLayout.createSequentialGroup()
                                         .addComponent(bEditPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(bClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(talm, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                                    .addComponent(tnama)
-                                    .addComponent(tidpelanggan)
-                                    .addComponent(tnohp)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 1509, Short.MAX_VALUE))))
+                                    .addComponent(cbStatusPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(1563, Short.MAX_VALUE))
+                    .addGroup(c_pesananLayout.createSequentialGroup()
+                        .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(c_pesananLayout.createSequentialGroup()
+                                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel10))
+                                .addGap(108, 108, 108)
+                                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tAlamatPesanan)
+                                    .addComponent(tNoHpPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         c_pesananLayout.setVerticalGroup(
             c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(c_pesananLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tCariPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bcari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tCariPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCariPesanan))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(tidpelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                    .addComponent(tIdPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(tnama, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
+                    .addComponent(tNamaPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(talm, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                    .addComponent(tAlamatPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(tnohp, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                    .addComponent(tNoHpPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(cbStatusPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(cbStatusPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bEditPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1800,6 +1735,13 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
         jScrollPane7.setViewportView(table_pp);
 
+        jButton1.setText("Cetak");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout c_promoLayout = new javax.swing.GroupLayout(c_promo);
         c_promo.setLayout(c_promoLayout);
         c_promoLayout.setHorizontalGroup(
@@ -1826,8 +1768,11 @@ public class HomeAdmin extends javax.swing.JFrame {
                                     .addComponent(bupdate_pp)
                                     .addComponent(bclear_pp)
                                     .addComponent(bdelete_pp)))
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, c_promoLayout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)))
+                        .addGap(0, 1311, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(c_promoLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
@@ -1836,7 +1781,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                 .addComponent(tcari_promo, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(bcari_promo)
-                .addContainerGap(1673, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         c_promoLayout.setVerticalGroup(
             c_promoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1852,7 +1797,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                                 .addComponent(bupdate)
                                 .addGap(18, 18, 18)
                                 .addComponent(bclear)
-                                .addGap(31, 31, 31)
+                                .addGap(18, 18, 18)
                                 .addComponent(bdelete))
                             .addGroup(c_promoLayout.createSequentialGroup()
                                 .addComponent(bsave_pp)
@@ -1869,7 +1814,8 @@ public class HomeAdmin extends javax.swing.JFrame {
                 .addGroup(c_promoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel30)
                     .addComponent(tcari_promo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bcari_promo))
+                    .addComponent(bcari_promo)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(806, Short.MAX_VALUE))
@@ -1927,7 +1873,59 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btn_updetProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updetProdukActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Ambil nilai dari input form
+            int idProduk = Integer.parseInt(t_idProduk.getText());
+            String namaProduk = t_namaProduk.getText();
+            String hargaProduk = t_hargaProduk.getText();
+            String stokProduk = t_stokProduk.getText();
+            String deskripsi = t_descProduk.getText();
+            String gambar = selectedFileName;
+            
+            // Validasi Gambar
+            if (gambar == null || gambar.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Silakan pilih gambar terlebih dahulu.");
+            return;
+            }
+            
+            // Ambil kategori dari combo box
+            String namaKategori = (String) t_catProduk.getSelectedItem();
+            if (namaKategori == null || namaKategori.equals("-- Pilih Kategori --")) {
+                JOptionPane.showMessageDialog(this, "Silakan pilih kategori terlebih dahulu.");
+                return;
+            }
+
+            // Ambil ID kategori dari Map
+            Integer categoryId = categoryMap.get(namaKategori);
+            if (categoryId == null) {
+                JOptionPane.showMessageDialog(this, "Kategori tidak valid.");
+                return;
+            }
+
+            // Query update produk
+            String sql = "UPDATE products SET category_id = ?, nama = ?, harga = ?, stok = ?, deskripsi = ?, gambar = ? WHERE id = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, categoryId);
+            pst.setString(2, namaProduk);
+            pst.setString(3, hargaProduk);
+            pst.setString(4, stokProduk);
+            pst.setString(5, deskripsi);
+            pst.setString(6, gambar);
+            pst.setInt(7, idProduk);
+
+            int hasil = pst.executeUpdate();
+            if (hasil > 0) {
+                JOptionPane.showMessageDialog(this, "Data produk berhasil diperbarui.");
+                getDataProduk(); // refresh tabel
+                clearFormProduk(); // kosongkan form input
+            } else {
+                JOptionPane.showMessageDialog(this, "Data produk gagal diperbarui.");
+            }
+
+            pst.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage());
+        }
     }//GEN-LAST:event_btn_updetProdukActionPerformed
 
     private void btn_addProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addProdukActionPerformed
@@ -1981,7 +1979,7 @@ public class HomeAdmin extends javax.swing.JFrame {
             int rowInserted = st.executeUpdate();
             if (rowInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Data Berhasil Ditambahkan");
-                resetForm();
+                clearFormProduk();
                 getDataProduk();
             }
 
@@ -1997,18 +1995,12 @@ public class HomeAdmin extends javax.swing.JFrame {
 
     private void btn_pilihGambarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pilihGambarActionPerformed
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Pilih Gambar Produk");
-
-        // Filter hanya file gambar
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Gambar (JPG, PNG, JPEG)", "jpg", "png", "jpeg");
-        fileChooser.setFileFilter(filter);
-
         int result = fileChooser.showOpenDialog(this);
+
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            selectedImagePath = selectedFile.getAbsolutePath(); // Simpan path gambar ke variabel global
-
-            JOptionPane.showMessageDialog(this, "Gambar dipilih: " + selectedImagePath);
+            selectedFileName = selectedFile.getName();  // ← hanya nama filenya
+            btn_pilihGambar.setText(selectedFileName);  // tampilkan di tombol
         }
     }//GEN-LAST:event_btn_pilihGambarActionPerformed
 
@@ -2031,10 +2023,6 @@ public class HomeAdmin extends javax.swing.JFrame {
     private void t_catProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_catProdukActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_t_catProdukActionPerformed
-
-    private void tnohpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnohpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tnohpActionPerformed
 
     private void btn_laporanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_laporanMouseExited
         if (selectedLabel != btn_laporan) {
@@ -2217,30 +2205,31 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_dashboardMouseClicked
 
     private void bEditPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditPelangganActionPerformed
-    try {
-        // Update tabel users
-        String sqlUsers = "UPDATE users SET nama = ?, alamat = ?, no_hp = ? WHERE id = ?";
-        PreparedStatement statUsers = conn.prepareStatement(sqlUsers);
-        statUsers.setString(1, tnama.getText());
-        statUsers.setString(2, talm.getText());
-        statUsers.setString(3, tnohp.getText());
-        statUsers.setString(4, tidpelanggan.getText());
-        statUsers.executeUpdate();
+        try {
+            // 1. Update tabel users berdasarkan nama pelanggan
+            String sqlUsers = "UPDATE users SET nama = ?, alamat = ?, no_hp = ? " +
+                              "WHERE id = (SELECT user_id FROM orders WHERE id = ?)";
+            PreparedStatement statUsers = conn.prepareStatement(sqlUsers);
+            statUsers.setString(1, tNamaPesanan.getText());
+            statUsers.setString(2, tAlamatPesanan.getText());
+            statUsers.setString(3, tNoHpPesanan.getText());
+            statUsers.setString(4, tIdPesanan.getText()); // ID Order
+            statUsers.executeUpdate();
 
-        // Update status di tabel orders
-        String sqlOrders = "UPDATE orders SET status = ? WHERE user_id = ?";
-        PreparedStatement statOrders = conn.prepareStatement(sqlOrders);
-        statOrders.setString(1, cbStatusPelanggan.getSelectedItem().toString());
-        statOrders.setString(2, tidpelanggan.getText());
-        statOrders.executeUpdate();
+            // 2. Update status pesanan di tabel orders berdasarkan ID Order
+            String sqlOrders = "UPDATE orders SET status = ? WHERE id = ?";
+            PreparedStatement statOrders = conn.prepareStatement(sqlOrders);
+            statOrders.setString(1, cbStatusPesanan.getSelectedItem().toString());
+            statOrders.setString(2, tIdPesanan.getText()); // ID Order
+            statOrders.executeUpdate();
 
-        JOptionPane.showMessageDialog(null, "Data pelanggan dan status berhasil diubah!");
+            JOptionPane.showMessageDialog(null, "Data pelanggan dan status berhasil diubah!");
 
-        clearPelanggan();
-        tablePelanggan();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Data gagal diubah! " + e, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+           clearPelanggan();
+           tablePelanggan();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data gagal diubah! " + e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bEditPelangganActionPerformed
 
     private void bClearPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bClearPelangganActionPerformed
@@ -2253,26 +2242,40 @@ public class HomeAdmin extends javax.swing.JFrame {
 
     private void tbl_produkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_produkMouseClicked
         int bar = tbl_produk.getSelectedRow();
-        String a = tabmode.getValueAt(bar, 0).toString();
-        String b = tabmode.getValueAt(bar, 1).toString();
-        String c = tabmode.getValueAt(bar, 2).toString();
-        String d = tabmode.getValueAt(bar, 3).toString();
-        String e = tabmode.getValueAt(bar, 4).toString();
-        String f = tabmode.getValueAt(bar, 5).toString();
-        String g = tabmode.getValueAt(bar, 6).toString();
-        
-        t_idProduk.setText(a);
-        t_idProduk.setEnabled(true);
-        t_catProduk.setSelectedItem(b);
-        t_namaProduk.setText(c);
-        t_hargaProduk.setText(d);
-        t_stokProduk.setText(e);
-        t_descProduk.setText(f);
-        btn_pilihGambar.setText(g);
+        DefaultTableModel model = (DefaultTableModel) tbl_produk.getModel();
+
+        if (bar != -1 && model.getColumnCount() >= 7) {
+            String a = model.getValueAt(bar, 0).toString(); // ID Produk
+            String b = model.getValueAt(bar, 1).toString(); // Kategori
+            String c = model.getValueAt(bar, 2).toString(); // Nama Produk
+            String d = model.getValueAt(bar, 3).toString(); // Harga
+            String e = model.getValueAt(bar, 4).toString(); // Stok
+            String f = model.getValueAt(bar, 5).toString(); // Deskripsi
+            String g = model.getValueAt(bar, 6).toString(); // Nama Gambar (file path)
+
+            t_idProduk.setText(a);
+            t_idProduk.setEnabled(true);
+            int idCategory = Integer.parseInt(model.getValueAt(bar, 1).toString());
+            String namaKategori = getCategoryNameById(idCategory);
+
+            if (namaKategori != null) {
+                t_catProduk.setSelectedItem(namaKategori);
+            } else {
+                t_catProduk.setSelectedIndex(0); // "-- Pilih Kategori --"
+            }
+            t_namaProduk.setText(c);
+            t_hargaProduk.setText(d);
+            t_stokProduk.setText(e);
+            t_descProduk.setText(f);
+            btn_pilihGambar.setText(g); // jika ingin menampilkan nama file gambar
+            t_idProduk.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Data produk tidak lengkap atau tidak valid.");
+        }
     }//GEN-LAST:event_tbl_produkMouseClicked
 
     private void bcariActionPerformed(java.awt.event.ActionEvent evt) {                                      
-        String keyword = tCariPelanggan.getText();
+        String keyword = tCariPesanan.getText();
 
         String sql = "SELECT " +
                  "u.id AS id_pelanggan, " +
@@ -2313,15 +2316,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error saat mencari data: " + e, "Error", JOptionPane.ERROR_MESSAGE);
         }                                
-    }                                     
-
-    private void tnamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnamaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tnamaActionPerformed
-
-    private void tblPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelangganMouseClicked
- 
-    }//GEN-LAST:event_tblPelangganMouseClicked
+    }                                    
 
     private void bDeleteKatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteKatActionPerformed
         int ok = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus data ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
@@ -2349,13 +2344,18 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_bDeleteKatActionPerformed
 
     private void tblkategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblkategoriMouseClicked
-        // TODO add your handling code here:
         int bar = tblkategori.getSelectedRow();
-        String a = tabmode.getValueAt(bar, 0).toString();
-        String b = tabmode.getValueAt(bar, 1).toString();
+        DefaultTableModel model = (DefaultTableModel) tblkategori.getModel();
 
-        tidkategori.setText(a);
-        tnamakategori.setText(b);
+        if (bar != -1 && model.getColumnCount() >= 2) {
+            String a = model.getValueAt(bar, 0).toString(); // ID Kategori
+            String b = model.getValueAt(bar, 1).toString(); // Nama Kategori
+
+            tidkategori.setText(a);
+            tnamakategori.setText(b);
+        } else {
+            JOptionPane.showMessageDialog(this, "Data kategori tidak valid atau kolom kurang.");
+        }
     }//GEN-LAST:event_tblkategoriMouseClicked
 
     private void tnamakategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tnamakategoriActionPerformed
@@ -2403,60 +2403,40 @@ public class HomeAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_beditActionPerformed
 
-    private void bcarikategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcarikategoriActionPerformed
-        String keyword = tcarikategori.getText();
-
-        String sql = "SELECT * FROM categories WHERE id LIKE ? OR nama LIKE ?";
-
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, "%" + keyword + "%"); // cari ID kategori
-            stat.setString(2, "%" + keyword + "%"); // cari Nama Kategori
-
-            ResultSet rs = stat.executeQuery();
-            tabmode.setRowCount(0); // Clear table
-
-            while (rs.next()) {
-                String a = rs.getString("id");
-                String b = rs.getString("nama");
-                String c = rs.getString("deleted_at");
-                String d = rs.getString("created_at");
-                String e = rs.getString("updated_at");
-                String[] data = {a, b, c, d, e};
-                tabmode.addRow(data);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error saat mencari data: " + e, "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_bcarikategoriActionPerformed
-
     private void tbl_promoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_promoMouseClicked
         int row = tbl_promo.getSelectedRow();
-        if(row != -1){
-            tid_promo.setText(tbl_promo.getValueAt(row,0).toString());
-            tnama_promo.setText(tbl_promo.getValueAt(row,1).toString());
-            tkode_promo.setText(tbl_promo.getValueAt(row,2).toString());
-            cmbJenisPromo.setSelectedItem(tbl_promo.getValueAt(row,3).toString());
-            tpot_harga.setText(tbl_promo.getValueAt(row,4).toString());
-            semua_produk.setText(tbl_promo.getValueAt(row,5).toString());
 
-            try{
-                String startDateStr = tbl_promo.getValueAt(row, 6).toString();
-                String endDateStr = tbl_promo.getValueAt(row, 7).toString();
+        // Ambil model langsung dari tabel
+        DefaultTableModel model = (DefaultTableModel) tbl_promo.getModel();
 
-                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (row != -1 && model.getColumnCount() >= 9) {
+            try {
+                tid_promo.setText(model.getValueAt(row, 0).toString());
+                tnama_promo.setText(model.getValueAt(row, 1).toString());
+                tkode_promo.setText(model.getValueAt(row, 2).toString());
+                cmbJenisPromo.setSelectedItem(model.getValueAt(row, 3).toString());
+                tpot_harga.setText(model.getValueAt(row, 4).toString());
+                semua_produk.setText(model.getValueAt(row, 5).toString());
+
+                // Tanggal mulai dan tanggal berakhir
+                String startDateStr = model.getValueAt(row, 6).toString();
+                String endDateStr = model.getValueAt(row, 7).toString();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date startDate = sdf.parse(startDateStr);
                 Date endDate = sdf.parse(endDateStr);
 
                 ttd.setDate(startDate);
                 ttb.setDate(endDate);
-            } catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Format tanggal salah"+ e.getMessage());
+
+                // Status promo
+                cmbStatus.setSelectedItem(model.getValueAt(row, 8).toString());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Kesalahan saat mengambil data promo: " + e.getMessage());
             }
-            cmbStatus.setSelectedItem(tbl_promo.getValueAt(row,8).toString());
+        } else {
+            JOptionPane.showMessageDialog(this, "Data promo tidak lengkap atau baris tidak valid.");
         }
-        // TODO add your handling code here:
     }//GEN-LAST:event_tbl_promoMouseClicked
 
     private void bsave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsave1ActionPerformed
@@ -2576,41 +2556,50 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_bdeleteActionPerformed
 
     private void bcari_promoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcari_promoActionPerformed
-        Object[] baris = {
-            "N0", "Nama", "Kode Promo", "Jenis Promo",
-            "Potongan Harga", "All Produk", "Tanggal Dimulai",
-            "Tanggal Berakhir", "Status"
-        };
+        String keyword = tcari_promo.getText().trim();
+       Object[] baris = {
+        "N0", "Nama", "Kode Promo", "Jenis Promo",
+        "Potongan Harga", "All Produk", "Tanggal Dimulai",
+        "Tanggal Berakhir", "Status"
+    };
+
 
         tabmode = new DefaultTableModel(null, baris);
-        tbl_promo.setModel(tabmode);
+    tbl_promo.setModel(tabmode);
 
-        String sql = "select * from promotions";
-        try {
-            java.sql.Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            // Iterasi data hasil query
-            while(hasil.next()){
-                String idpromo = hasil.getString("id");
-                String namapromo = hasil.getString("nama_promo");
-                String kodepromo = hasil.getString("kode_promo");
-                String jenispromo = hasil.getString("jenis_promo");
-                String potharga = hasil.getString("potongan_harga");
-                String allproduk = hasil.getString("all_products");
-                Date starDate = hasil.getTimestamp("start_date");
-                Date endDate = hasil.getTimestamp("end_date");
-                String stardate = starDate != null ? sdf.format(starDate): "";
-                String enddate = endDate != null ? sdf.format(endDate): "";
-                String status = hasil.getString("status");
+    String sql = "SELECT * FROM promotions WHERE nama_promo LIKE ? OR kode_promo LIKE ?";
 
-                String[] data = {idpromo, namapromo, kodepromo, jenispromo, potharga, allproduk, stardate, enddate, status};
-                tabmode.addRow(data);
-            }
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(null, "Gagal menampilkan data: " + e.getMessage());
+    try {
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, "%" + keyword + "%");
+        pst.setString(2, "%" + keyword + "%");
+        ResultSet hasil = pst.executeQuery();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int no = 1;
+
+        while (hasil.next()) {
+            String idpromo = String.valueOf(no++);
+            String namapromo = hasil.getString("nama_promo");
+            String kodepromo = hasil.getString("kode_promo");
+            String jenispromo = hasil.getString("jenis_promo");
+            String potharga = hasil.getString("potongan_harga");
+            String allproduk = hasil.getString("all_products");
+            Date starDate = hasil.getTimestamp("start_date");
+            Date endDate = hasil.getTimestamp("end_date");
+            String stardate = starDate != null ? sdf.format(starDate) : "";
+            String enddate = endDate != null ? sdf.format(endDate) : "";
+            String status = hasil.getString("status");
+
+            String[] data = {idpromo, namapromo, kodepromo, jenispromo, potharga, allproduk, stardate, enddate, status};
+            tabmode.addRow(data);
         }
-        // TODO add your handling code here:
+
+        hasil.close();
+        pst.close();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal mencari data: " + e.getMessage());
+    }
     }//GEN-LAST:event_bcari_promoActionPerformed
 
     private void bcari_produk2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcari_produk2ActionPerformed
@@ -2699,16 +2688,21 @@ public class HomeAdmin extends javax.swing.JFrame {
 
     private void table_ppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ppMouseClicked
         int bar = table_pp.getSelectedRow();
-        String a = tabmode.getValueAt(bar, 0).toString();
-        String b = tabmode.getValueAt(bar, 1).toString();
-        String c = tabmode.getValueAt(bar, 2).toString();
 
+        DefaultTableModel model = (DefaultTableModel) table_pp.getModel();
 
+        if (bar != -1 && model.getColumnCount() >= 3) {
+            String a = model.getValueAt(bar, 0).toString();
+            String b = model.getValueAt(bar, 1).toString();
+            String c = model.getValueAt(bar, 2).toString();
 
-        tidpp.setText(a);
-        tidpp.setEnabled(false);
-        tid_produk2.setText(b);
-        tid_promo2.setText(c);
+            tidpp.setText(a);
+            tidpp.setEnabled(false); // Mengunci ID agar tidak diubah
+            tid_produk2.setText(b);
+            tid_promo2.setText(c);
+        } else {
+            JOptionPane.showMessageDialog(this, "Data tidak lengkap atau kolom kurang.");
+        }
     }//GEN-LAST:event_table_ppMouseClicked
 
     private void bclear_ppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bclear_ppActionPerformed
@@ -2936,6 +2930,128 @@ public class HomeAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCariCustomerActionPerformed
 
+    private void tNoHpPesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tNoHpPesananActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tNoHpPesananActionPerformed
+
+    private void tNamaPesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tNamaPesananActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tNamaPesananActionPerformed
+
+    private void tIdPesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tIdPesananActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tIdPesananActionPerformed
+
+    private void tblPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelangganMouseClicked
+       int bar = tblPelanggan.getSelectedRow();
+       DefaultTableModel model = (DefaultTableModel) tblPelanggan.getModel();
+
+        if (bar < 0 || model.getColumnCount() < 8) {
+            JOptionPane.showMessageDialog(null, "Data tabel tidak sesuai!");
+            return;
+        }
+
+        String idPelanggan = model.getValueAt(bar, 0).toString();
+        String nama = model.getValueAt(bar, 1).toString();
+        String email = model.getValueAt(bar, 2).toString();
+        String alamat = model.getValueAt(bar, 3).toString();
+        String noHp = model.getValueAt(bar, 4).toString();
+        String idOrder = model.getValueAt(bar, 5).toString();
+        String status = model.getValueAt(bar, 6).toString();
+        String tanggal = model.getValueAt(bar, 7).toString();
+
+        tIdPesanan.setText(idOrder);
+        tIdPesanan.setEnabled(false);
+        tNamaPesanan.setText(nama);
+        tAlamatPesanan.setText(alamat);
+        tNoHpPesanan.setText(noHp);
+        cbStatusPesanan.setSelectedItem(status);
+    }//GEN-LAST:event_tblPelangganMouseClicked
+
+    private void btn_clearProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearProdukActionPerformed
+        clearFormProduk();
+        t_idProduk.setEnabled(false);
+    }//GEN-LAST:event_btn_clearProdukActionPerformed
+
+    private void btn_deletProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deletProdukActionPerformed
+        try {
+            // Ambil ID produk dari form
+            String idProdukStr = t_idProduk.getText();
+
+            // Validasi jika kosong
+            if (idProdukStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Silakan pilih produk yang ingin dihapus terlebih dahulu.");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                "Yakin ingin menghapus produk ini?", 
+                "Konfirmasi Hapus", 
+                JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                int idProduk = Integer.parseInt(idProdukStr);
+                
+                String sql = "DELETE FROM products WHERE id = ?";
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setInt(1, idProduk);
+
+                int result = pst.executeUpdate();
+
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Produk berhasil dihapus.");
+                    getDataProduk();     // refresh tabel
+                    clearFormProduk();  // kosongkan form input
+                } else {
+                    JOptionPane.showMessageDialog(this, "Produk tidak ditemukan atau gagal dihapus.");
+                }
+
+                pst.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus produk: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btn_deletProdukActionPerformed
+
+    private void btn_cetakProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetakProdukActionPerformed
+        try {
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/tugasakhir_db", "root", "");
+
+            String reportPath = "src/laporan/laporanproduk.jasper";
+            Map<String, Object> params = new HashMap<>();
+            params.put("PARAM_ID_TRANSAKSI", 123);
+
+            JasperPrint jprint = JasperFillManager.fillReport(reportPath, params, conn);
+            JasperViewer.viewReport(jprint, false);
+
+        } catch (SQLException | JRException e) {
+            JOptionPane.showMessageDialog(this, "Gagal mencetak struk: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_cetakProdukActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/tugasakhir_db", "root", "");
+
+            String reportPath = "src/laporan/laporanpromo.jasper";
+            Map<String, Object> params = new HashMap<>();
+            params.put("PARAM_ID_TRANSAKSI", 123);
+
+            JasperPrint jprint = JasperFillManager.fillReport(reportPath, params, conn);
+            JasperViewer.viewReport(jprint, false);
+
+        } catch (SQLException | JRException e) {
+            JOptionPane.showMessageDialog(this, "Gagal mencetak struk: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnCariPesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPesananActionPerformed
+        String keyword = tCariPesanan.getText().trim();
+        tablePelanggan(keyword);
+    }//GEN-LAST:event_btnCariPesananActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2978,11 +3094,9 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JButton bClearPelanggan;
     private javax.swing.JButton bDeleteKat;
     private javax.swing.JButton bEditPelanggan;
-    private javax.swing.JButton bcari;
     private javax.swing.JButton bcari_produk2;
     private javax.swing.JButton bcari_promo;
     private javax.swing.JButton bcari_promo2;
-    private javax.swing.JButton bcarikategori;
     private javax.swing.JButton bclear;
     private javax.swing.JButton bclear_pp;
     private javax.swing.JButton bdelete;
@@ -2992,6 +3106,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JButton bsave1;
     private javax.swing.JButton bsave_pp;
     private javax.swing.JButton btnCariCustomer;
+    private javax.swing.JButton btnCariPesanan;
     private javax.swing.JButton btnCetakCustomer;
     private javax.swing.JButton btnClearPelanggan;
     private javax.swing.JButton btnDeleteCustomer;
@@ -3019,9 +3134,10 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel c_pesanan;
     private javax.swing.JPanel c_produk;
     private javax.swing.JPanel c_promo;
-    private javax.swing.JComboBox<String> cbStatusPelanggan;
+    private javax.swing.JComboBox<String> cbStatusPesanan;
     private javax.swing.JComboBox<String> cmbJenisPromo;
     private javax.swing.JComboBox<String> cmbStatus;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3035,7 +3151,6 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
@@ -3059,21 +3174,18 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
@@ -3090,13 +3202,17 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.ButtonGroup rolePelanggan;
     private javax.swing.JCheckBox semua_produk;
     private javax.swing.JTextArea tAlamatPelanggan;
+    private javax.swing.JTextField tAlamatPesanan;
     private javax.swing.JTextField tCPasswordPelanggan;
     private javax.swing.JTextField tCariCustomer;
-    private javax.swing.JTextField tCariPelanggan;
+    private javax.swing.JTextField tCariPesanan;
     private javax.swing.JTextField tEmailPelanggan;
     private javax.swing.JTextField tIdPelanggan;
+    private javax.swing.JTextField tIdPesanan;
     private javax.swing.JTextField tNamaPelanggan;
+    private javax.swing.JTextField tNamaPesanan;
     private javax.swing.JTextField tNoHpPelanggan;
+    private javax.swing.JTextField tNoHpPesanan;
     private javax.swing.JTextField tPasswordPelanggan;
     private javax.swing.JComboBox<String> t_catProduk;
     private javax.swing.JTextField t_descProduk;
@@ -3106,42 +3222,24 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JTextField t_stokProduk;
     private javax.swing.JLabel t_userName;
     private javax.swing.JTable table_pp;
-    private javax.swing.JTextField talm;
     private javax.swing.JTable tblCustomer;
     private javax.swing.JTable tblPelanggan;
-    private javax.swing.JTable tbl_order;
     private javax.swing.JTable tbl_produk;
-    private javax.swing.JTable tbl_produk2;
     private javax.swing.JTable tbl_promo;
     private javax.swing.JTable tblkategori;
     private javax.swing.JTextField tcari_promo;
-    private javax.swing.JTextField tcarikategori;
     private javax.swing.JTextField tid_produk2;
     private javax.swing.JTextField tid_promo;
     private javax.swing.JTextField tid_promo2;
     private javax.swing.JTextField tidkategori;
-    private javax.swing.JTextField tidpelanggan;
     private javax.swing.JTextField tidpp;
     private javax.swing.JTextField tkode_promo;
-    private javax.swing.JTextField tnama;
     private javax.swing.JTextField tnama_produk2;
     private javax.swing.JTextField tnama_promo;
     private javax.swing.JTextField tnama_promo2;
     private javax.swing.JTextField tnamakategori;
-    private javax.swing.JTextField tnohp;
     private javax.swing.JTextField tpot_harga;
     private com.toedter.calendar.JDateChooser ttb;
     private com.toedter.calendar.JDateChooser ttd;
-    private javax.swing.JLabel ttl_income;
-    private javax.swing.JLabel ttl_pesanan;
-    private javax.swing.JLabel ttl_produk;
     // End of variables declaration//GEN-END:variables
-
-    private void resetForm() {
-        t_namaProduk.setText("");
-        t_hargaProduk.setText("");
-        t_stokProduk.setText("");
-        t_descProduk.setText("");
-        btn_pilihGambar.setText("");
-    }
 }
