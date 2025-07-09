@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="PARAM_USER_ID" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
      orders.`id` AS orders_id,
@@ -16,7 +17,8 @@
      orders.`created_at` AS orders_created_at,
      orders.`updated_at` AS orders_updated_at
 FROM
-     `orders` orders]]>
+     `orders` orders
+WHERE user_id = $P{PARAM_USER_ID}]]>
 	</queryString>
 	<field name="orders_id" class="java.lang.Integer"/>
 	<field name="orders_user_id" class="java.lang.Integer"/>
@@ -67,7 +69,7 @@ FROM
 				</staticText>
 			</elementGroup>
 			<image>
-				<reportElement x="2" y="0" width="142" height="127" uuid="bcc39498-f93d-47a2-8444-bcf0bd659ae8"/>
+				<reportElement x="0" y="0" width="142" height="127" uuid="bcc39498-f93d-47a2-8444-bcf0bd659ae8"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -75,7 +77,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<imageExpression><![CDATA["C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Project_PemVisual\\src\\images\\assets\\baru logo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\Users\\ASUS\\OneDrive\\Documents\\NetBeansProjects\\Project_PemVisual\\src\\images\\assets\\baru logo.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -295,14 +297,26 @@ FROM
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="99" splitType="Stretch">
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="455" y="0" width="100" height="20" uuid="3538782e-87a4-4700-ac06-2b8e5c465f74"/>
+				<reportElement x="452" y="0" width="103" height="20" uuid="3538782e-87a4-4700-ac06-2b8e5c465f74"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="397" y="0" width="58" height="20" uuid="64f7fc9a-3be7-42b4-b2d9-00bcad42b001"/>
-				<text><![CDATA[JAKARTA,]]></text>
+				<reportElement x="413" y="0" width="39" height="20" uuid="64f7fc9a-3be7-42b4-b2d9-00bcad42b001"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jakarta,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="59" width="103" height="20" uuid="14d6dc87-26ae-45d6-bf4f-fcffe459681f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(		)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="79" width="103" height="20" uuid="95c7c8ef-287d-4ffc-9d6e-3de328a6c7bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Admin Labites]]></text>
 			</staticText>
 		</band>
 	</pageFooter>

@@ -22,8 +22,16 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 
@@ -40,11 +48,14 @@ public class HomeAdmin extends javax.swing.JFrame {
         initComponents();
         conn = Koneksi.getConnection();
         
-         if (Login.loggedUser != null) {
+        if (Login.loggedUser != null) {
             t_userName.setText("Selamat Datang, " + Login.loggedUser + "!");
         } else {
             t_userName.setText("Selamat Datang, User!");
         }
+         
+        Locale loc = new Locale ("id", "ID");
+        Locale.setDefault(loc);
          
          getDataProduk();
          tablePelanggan();
@@ -52,6 +63,7 @@ public class HomeAdmin extends javax.swing.JFrame {
          loadCategoryToComboBox();
          loadPromo();
         loadProdukPromo();
+        tableCustomer();
     }
     
     private void getDataProduk() {
@@ -264,10 +276,52 @@ public class HomeAdmin extends javax.swing.JFrame {
         }
      }
      
+     protected void tableCustomer() {
+         Object[] Baris = {"Id", "Nama Pelanggan", "Email Pelanggan", "Alamat", "No HP", "Role"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tblCustomer.setModel(tabmode);
+        
+        try {
+            String sql = "SELECT * FROM users";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+       
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String nama = rs.getString("nama");
+                String email = rs.getString("email");
+                String alamat = rs.getString("alamat");
+                String noHp = rs.getString("no_hp");
+                String role = rs.getString("role");
+
+                Object[] rowData = {id, nama, email, alamat, noHp, role};
+                tabmode.addRow(rowData);
+            }
+
+            rs.close();
+            st.close();
+                    
+        } catch (Exception e) {
+            Logger.getLogger(HomeAdmin.class.getName()).log(Level.SEVERE, null, e);
+        }
+     }
+     
+     protected void kosongPelanggan() {
+        tIdPelanggan.setText("");
+        tNamaPelanggan.setText("");
+        tEmailPelanggan.setText("");
+        tNoHpPelanggan.setText("");
+        tAlamatPelanggan.setText("");
+        rolePelanggan.clearSelection();
+        tPasswordPelanggan.setText("");
+        tCPasswordPelanggan.setText("");
+     }
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rolePelanggan = new javax.swing.ButtonGroup();
         pn_kiri = new javax.swing.JPanel();
         logo = new javax.swing.JLabel();
         btn_dashboard = new javax.swing.JLabel();
@@ -331,9 +385,36 @@ public class HomeAdmin extends javax.swing.JFrame {
         tcarikategori = new javax.swing.JTextField();
         bcarikategori = new javax.swing.JButton();
         bDeleteKat = new javax.swing.JButton();
-        c_pesanan = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
         c_pelanggan = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        tNamaPelanggan = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
+        tEmailPelanggan = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        tNoHpPelanggan = new javax.swing.JTextField();
+        jLabel38 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tAlamatPelanggan = new javax.swing.JTextArea();
+        jLabel39 = new javax.swing.JLabel();
+        tPasswordPelanggan = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        tCPasswordPelanggan = new javax.swing.JTextField();
+        btnRegister = new javax.swing.JButton();
+        btnEditCustomer = new javax.swing.JButton();
+        btnDeleteCustomer = new javax.swing.JButton();
+        btnCetakCustomer = new javax.swing.JButton();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tblCustomer = new javax.swing.JTable();
+        tCariCustomer = new javax.swing.JTextField();
+        btnCariCustomer = new javax.swing.JButton();
+        jLabel41 = new javax.swing.JLabel();
+        rbRole1 = new javax.swing.JRadioButton();
+        rbRole2 = new javax.swing.JRadioButton();
+        tIdPelanggan = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        btnClearPelanggan = new javax.swing.JButton();
+        c_pesanan = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -503,7 +584,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         });
 
         btn_laporan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_laporan.setText("LAPORAN PENJUALAN");
+        btn_laporan.setText("LOGOUT");
         btn_laporan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_laporanMouseClicked(evt);
@@ -553,7 +634,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                 .addComponent(btn_promo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_laporan, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(943, Short.MAX_VALUE))
+                .addContainerGap(981, Short.MAX_VALUE))
         );
 
         getContentPane().add(pn_kiri, java.awt.BorderLayout.LINE_START);
@@ -923,7 +1004,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btn_cetakProduk))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(847, Short.MAX_VALUE))
+                .addContainerGap(885, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_produk, "c_produk");
@@ -1063,31 +1144,216 @@ public class HomeAdmin extends javax.swing.JFrame {
                     .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bClearKat, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bDeleteKat, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(1024, Short.MAX_VALUE))
+                .addContainerGap(1062, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_kategori, "c_kategori");
 
-        jLabel17.setText("INI PESENAN");
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("Registrasi Pelanggan");
 
-        javax.swing.GroupLayout c_pesananLayout = new javax.swing.GroupLayout(c_pesanan);
-        c_pesanan.setLayout(c_pesananLayout);
-        c_pesananLayout.setHorizontalGroup(
-            c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(c_pesananLayout.createSequentialGroup()
+        jLabel35.setText("Nama");
+
+        jLabel36.setText("Email");
+
+        jLabel37.setText("No HP");
+
+        jLabel38.setText("Alamat");
+
+        tAlamatPelanggan.setColumns(20);
+        tAlamatPelanggan.setRows(5);
+        jScrollPane8.setViewportView(tAlamatPelanggan);
+
+        jLabel39.setText("Password");
+
+        jLabel40.setText("Confirm Password");
+
+        btnRegister.setText("Registrasi");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
+
+        btnEditCustomer.setText("Edit");
+        btnEditCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditCustomerActionPerformed(evt);
+            }
+        });
+
+        btnDeleteCustomer.setText("Delete");
+        btnDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteCustomerActionPerformed(evt);
+            }
+        });
+
+        btnCetakCustomer.setText("Cetak");
+        btnCetakCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakCustomerActionPerformed(evt);
+            }
+        });
+
+        tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCustomerMouseClicked(evt);
+            }
+        });
+        jScrollPane9.setViewportView(tblCustomer);
+
+        btnCariCustomer.setText("Cari");
+        btnCariCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariCustomerActionPerformed(evt);
+            }
+        });
+
+        jLabel41.setText("Role");
+
+        rolePelanggan.add(rbRole1);
+        rbRole1.setText("admin");
+        rbRole1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbRole1ActionPerformed(evt);
+            }
+        });
+
+        rolePelanggan.add(rbRole2);
+        rbRole2.setText("user");
+
+        tIdPelanggan.setEnabled(false);
+
+        jLabel42.setText("Id");
+
+        btnClearPelanggan.setText("Clear");
+        btnClearPelanggan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearPelangganActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout c_pelangganLayout = new javax.swing.GroupLayout(c_pelanggan);
+        c_pelanggan.setLayout(c_pelangganLayout);
+        c_pelangganLayout.setHorizontalGroup(
+            c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(c_pelangganLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel17)
-                .addContainerGap(2232, Short.MAX_VALUE))
+                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 1163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(c_pelangganLayout.createSequentialGroup()
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(c_pelangganLayout.createSequentialGroup()
+                                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel35)
+                                    .addComponent(jLabel36)
+                                    .addComponent(jLabel37)
+                                    .addComponent(jLabel38)
+                                    .addComponent(jLabel39)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel42))
+                                .addGap(18, 18, 18)
+                                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tEmailPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tNoHpPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(c_pelangganLayout.createSequentialGroup()
+                                        .addComponent(rbRole1)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(rbRole2))
+                                    .addComponent(tPasswordPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tCPasswordPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(c_pelangganLayout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEditCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(c_pelangganLayout.createSequentialGroup()
+                                .addComponent(tCariCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCariCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnCetakCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(1166, Short.MAX_VALUE))
         );
-        c_pesananLayout.setVerticalGroup(
-            c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(c_pesananLayout.createSequentialGroup()
+        c_pelangganLayout.setVerticalGroup(
+            c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(c_pelangganLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel17)
-                .addContainerGap(1395, Short.MAX_VALUE))
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tIdPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel42)
+                    .addComponent(tCariCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCariCustomer))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(c_pelangganLayout.createSequentialGroup()
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel35))
+                        .addGap(18, 18, 18)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tEmailPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel36))
+                        .addGap(18, 18, 18)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tNoHpPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel37))
+                        .addGap(18, 18, 18)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel38)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel41)
+                            .addComponent(rbRole1)
+                            .addComponent(rbRole2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tPasswordPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel39))
+                        .addGap(11, 11, 11)
+                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel40)
+                            .addComponent(tCPasswordPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCetakCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(901, 901, 901))
         );
 
-        pn_utama.add(c_pesanan, "c_pesanan");
+        pn_utama.add(c_pelanggan, "c_pelanggan");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("ID Pelanggan");
@@ -1160,31 +1426,31 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         cbStatusPelanggan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Status Pemesanan --", "menunggu_pembayaran", "diproses", "dikirim", "selesai" }));
 
-        javax.swing.GroupLayout c_pelangganLayout = new javax.swing.GroupLayout(c_pelanggan);
-        c_pelanggan.setLayout(c_pelangganLayout);
-        c_pelangganLayout.setHorizontalGroup(
-            c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(c_pelangganLayout.createSequentialGroup()
+        javax.swing.GroupLayout c_pesananLayout = new javax.swing.GroupLayout(c_pesanan);
+        c_pesanan.setLayout(c_pesananLayout);
+        c_pesananLayout.setHorizontalGroup(
+            c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(c_pesananLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(c_pelangganLayout.createSequentialGroup()
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(c_pesananLayout.createSequentialGroup()
                         .addComponent(tCariPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(bcari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(c_pelangganLayout.createSequentialGroup()
-                        .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(c_pesananLayout.createSequentialGroup()
+                        .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
-                            .addGroup(c_pelangganLayout.createSequentialGroup()
-                                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(c_pesananLayout.createSequentialGroup()
+                                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel11))
                                 .addGap(56, 56, 56)
-                                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cbStatusPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(c_pelangganLayout.createSequentialGroup()
+                                    .addGroup(c_pesananLayout.createSequentialGroup()
                                         .addComponent(bEditPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(bClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1195,43 +1461,43 @@ public class HomeAdmin extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 1509, Short.MAX_VALUE))))
         );
-        c_pelangganLayout.setVerticalGroup(
-            c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(c_pelangganLayout.createSequentialGroup()
+        c_pesananLayout.setVerticalGroup(
+            c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(c_pesananLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tCariPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bcari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(tidpelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(tnama, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(talm, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(tnohp, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbStatusPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(c_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(c_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bEditPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bClearPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        pn_utama.add(c_pelanggan, "c_pelanggan");
+        pn_utama.add(c_pesanan, "c_pesanan");
 
         tbl_promo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1606,7 +1872,7 @@ public class HomeAdmin extends javax.swing.JFrame {
                     .addComponent(bcari_promo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(838, Short.MAX_VALUE))
+                .addContainerGap(806, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_promo, "c_promo");
@@ -1627,7 +1893,7 @@ public class HomeAdmin extends javax.swing.JFrame {
             .addGroup(c_laporanLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jLabel19)
-                .addContainerGap(1379, Short.MAX_VALUE))
+                .addContainerGap(1417, Short.MAX_VALUE))
         );
 
         pn_utama.add(c_laporan, "c_laporan");
@@ -1783,15 +2049,26 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_laporanMouseEntered
 
     private void btn_laporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_laporanMouseClicked
-        CardLayout ly = (CardLayout)pn_utama.getLayout();
-        ly.show(pn_utama, "c_laporan");
+        int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin logout?", "Konfirmasi Logout", JOptionPane.YES_NO_OPTION);
 
-        if (selectedLabel != null) {
-            selectedLabel.setBackground(new Color(240, 240, 240));
-        }
+        if (confirm == JOptionPane.YES_OPTION) {
+        // Hapus session
+        Login.idUser = null;
 
-        selectedLabel = btn_laporan;
-        btn_laporan.setBackground(new Color(150, 150, 150));
+        // Tampilkan kembali form login
+        Login login = new Login();
+        login.setVisible(true);
+        this.dispose();
+    }
+//        CardLayout ly = (CardLayout)pn_utama.getLayout();
+//        ly.show(pn_utama, "c_laporan");
+//
+//        if (selectedLabel != null) {
+//            selectedLabel.setBackground(new Color(240, 240, 240));
+//        }
+//
+//        selectedLabel = btn_laporan;
+//        btn_laporan.setBackground(new Color(150, 150, 150));
     }//GEN-LAST:event_btn_laporanMouseClicked
 
     private void btn_promoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_promoMouseExited
@@ -2462,6 +2739,203 @@ public class HomeAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bdelete_ppActionPerformed
 
+    private void rbRole1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbRole1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbRole1ActionPerformed
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        String nama = tNamaPelanggan.getText();
+        String email = tEmailPelanggan.getText();
+        String noHp = tNoHpPelanggan.getText();
+        String alamat = tAlamatPelanggan.getText();
+        String role;
+        if (rbRole1.isSelected()) {
+            role = rbRole1.getText();
+        } else {
+            role = rbRole2.getText();
+        }
+        String pass1 = tPasswordPelanggan.getText();
+        String pass2 = tCPasswordPelanggan.getText();
+        
+        if (nama.isEmpty() || email.isEmpty() || noHp.isEmpty() || alamat.isEmpty() || role.isEmpty() || pass1.isEmpty() || pass2.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua Kolom Harus Terisi!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Validasi panjang password maksimal 8 karakter
+        if (pass1.length() > 8) {
+            JOptionPane.showMessageDialog(this, "Password maksimal 8 karakter!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Validasi password harus sama dengan konfirmasi password
+        if (!pass1.equals(pass2)) {
+            JOptionPane.showMessageDialog(this, "Password tidak sesuai!", "Validasi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            String checkUser = "SELECT * FROM users WHERE email = ?";
+            PreparedStatement checkEmail = conn.prepareStatement(checkUser);
+            checkEmail.setString(1, email);
+            ResultSet rs = checkEmail.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Email sudah digunakan!", "Validasi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            String sql = "INSERT into users (nama, email, password, role, alamat, no_hp) VALUES (?,?,?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, nama);
+            st.setString(2, email);
+            st.setString(3, pass2);
+            st.setString(4, role);
+            st.setString(5, alamat);
+            st.setString(6, noHp);
+            
+            int rowInserted = st.executeUpdate();
+            if (rowInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Data Berhasil Ditambahkan");                
+            }
+            
+            kosongPelanggan();
+            tableCustomer();
+            st.close();
+        } catch (Exception e) {
+           Logger.getLogger(HomeAdmin.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void tblCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCustomerMouseClicked
+        int bar = tblCustomer.getSelectedRow();
+        String a = tabmode.getValueAt(bar, 0).toString();
+        String b = tabmode.getValueAt(bar, 1).toString();
+        String c = tabmode.getValueAt(bar, 2).toString();
+        String d = tabmode.getValueAt(bar, 3).toString();
+        String e = tabmode.getValueAt(bar, 4).toString();
+        String f = tabmode.getValueAt(bar, 5).toString();
+        
+        tIdPelanggan.setText(a);
+        tNamaPelanggan.setText(b);
+        tEmailPelanggan.setText(c);
+        if (f.equals("admin")) {
+            rbRole1.setSelected(true);
+            rbRole2.setSelected(false);
+        } else {
+            rbRole1.setSelected(false);
+            rbRole2.setSelected(true);
+        }
+        tNoHpPelanggan.setText(d);
+        tAlamatPelanggan.setText(e);
+        
+        btnRegister.setEnabled(false);
+    }//GEN-LAST:event_tblCustomerMouseClicked
+
+    private void btnEditCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCustomerActionPerformed
+        String id = tIdPelanggan.getText();
+        String nama = tNamaPelanggan.getText();
+        String email = tEmailPelanggan.getText();
+        String noHp = tNoHpPelanggan.getText();
+        String alamat = tAlamatPelanggan.getText();
+        String role;
+        if (rbRole1.isSelected()) {
+            role = rbRole1.getText();
+        } else {
+            role = rbRole2.getText();
+        }
+        String pass1 = tPasswordPelanggan.getText();
+        String pass2 = tCPasswordPelanggan.getText();
+        try {
+            String sql = "UPDATE users SET nama=?, email=?, password=?, role=?, alamat=?, no_hp=? WHERE id=?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, nama);
+            stat.setString(2, email);
+            stat.setString(3, pass2);
+            stat.setString(4, role);
+            stat.setString(5, alamat);
+            stat.setString(6, noHp);
+            stat.setString(7, id);
+
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data Berhasil Diubah!");
+
+            kosongPelanggan();
+            tableCustomer();
+            btnRegister.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data Gagal Diubah! " + e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditCustomerActionPerformed
+
+    private void btnClearPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPelangganActionPerformed
+        kosongPelanggan();
+        btnRegister.setEnabled(true);
+    }//GEN-LAST:event_btnClearPelangganActionPerformed
+
+    private void btnDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCustomerActionPerformed
+        int ok = JOptionPane.showConfirmDialog(null, "Yakin untuk dihapus?", "Konfirmasi Dialgo", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            String sql = "DELETE FROM users WHERE id = '" + tIdPelanggan.getText() + "'";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus!");
+                
+                kosongPelanggan();
+                tableCustomer();
+                tIdPelanggan.requestFocus();
+                btnRegister.setEnabled(true);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Data Gagal Dihapus!" + e);
+            } 
+        }
+    }//GEN-LAST:event_btnDeleteCustomerActionPerformed
+
+    private void btnCetakCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakCustomerActionPerformed
+        try {
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/tugasakhir_db", "root", "");
+
+            String reportPath = "src/laporan/laporanpelanggan.jasper";
+            Map<String, Object> params = new HashMap<>();
+            params.put("PARAM_ID_TRANSAKSI", 123);
+
+            JasperPrint jprint = JasperFillManager.fillReport(reportPath, params, conn);
+            JasperViewer.viewReport(jprint, false);
+
+        } catch (SQLException | JRException e) {
+            JOptionPane.showMessageDialog(this, "Gagal mencetak struk: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnCetakCustomerActionPerformed
+
+    private void btnCariCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariCustomerActionPerformed
+        String keyword = tCariCustomer.getText();
+
+        String sql = "SELECT * FROM users WHERE nama LIKE ? OR id LIKE ?";
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, "%" + keyword + "%"); 
+            stat.setString(2, "%" + keyword + "%");
+
+            ResultSet rs = stat.executeQuery();
+            tabmode.setRowCount(0);
+            
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String nama = rs.getString("nama");
+                String email = rs.getString("email");
+                String alamat = rs.getString("alamat");
+                String noHp = rs.getString("no_hp");
+                String role = rs.getString("role");
+
+                Object[] rowData = {id, nama, email, alamat, noHp, role};
+                tabmode.addRow(rowData);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error saat mencari data: " + e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCariCustomerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2517,6 +2991,12 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JButton bsave;
     private javax.swing.JButton bsave1;
     private javax.swing.JButton bsave_pp;
+    private javax.swing.JButton btnCariCustomer;
+    private javax.swing.JButton btnCetakCustomer;
+    private javax.swing.JButton btnClearPelanggan;
+    private javax.swing.JButton btnDeleteCustomer;
+    private javax.swing.JButton btnEditCustomer;
+    private javax.swing.JButton btnRegister;
     private javax.swing.JButton btn_addProduk;
     private javax.swing.JButton btn_cetakProduk;
     private javax.swing.JButton btn_clearProduk;
@@ -2570,7 +3050,15 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -2589,14 +3077,27 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel pn_atas;
     private javax.swing.JPanel pn_dasar;
     private javax.swing.JPanel pn_kanan;
     private javax.swing.JPanel pn_kiri;
     private javax.swing.JPanel pn_utama;
+    private javax.swing.JRadioButton rbRole1;
+    private javax.swing.JRadioButton rbRole2;
+    private javax.swing.ButtonGroup rolePelanggan;
     private javax.swing.JCheckBox semua_produk;
+    private javax.swing.JTextArea tAlamatPelanggan;
+    private javax.swing.JTextField tCPasswordPelanggan;
+    private javax.swing.JTextField tCariCustomer;
     private javax.swing.JTextField tCariPelanggan;
+    private javax.swing.JTextField tEmailPelanggan;
+    private javax.swing.JTextField tIdPelanggan;
+    private javax.swing.JTextField tNamaPelanggan;
+    private javax.swing.JTextField tNoHpPelanggan;
+    private javax.swing.JTextField tPasswordPelanggan;
     private javax.swing.JComboBox<String> t_catProduk;
     private javax.swing.JTextField t_descProduk;
     private javax.swing.JTextField t_hargaProduk;
@@ -2606,6 +3107,7 @@ public class HomeAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel t_userName;
     private javax.swing.JTable table_pp;
     private javax.swing.JTextField talm;
+    private javax.swing.JTable tblCustomer;
     private javax.swing.JTable tblPelanggan;
     private javax.swing.JTable tbl_order;
     private javax.swing.JTable tbl_produk;
