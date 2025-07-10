@@ -1931,6 +1931,8 @@ public class HomeAdmin extends javax.swing.JFrame {
     private void btn_addProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addProdukActionPerformed
         try {
             String selectedCategory = (String) t_catProduk.getSelectedItem();
+            System.out.println("Selected image path: " + selectedImagePath);
+
             if (selectedCategory.equals("-- Pilih Kategori --")) {
                 JOptionPane.showMessageDialog(this, "Pilih kategori terlebih dahulu!", "Validasi", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1999,8 +2001,12 @@ public class HomeAdmin extends javax.swing.JFrame {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            selectedFileName = selectedFile.getName();  // ← hanya nama filenya
-            btn_pilihGambar.setText(selectedFileName);  // tampilkan di tombol
+
+            // Simpan path lengkap ke variabel global
+            selectedImagePath = selectedFile.getAbsolutePath(); // ← INI YANG PENTING
+
+            selectedFileName = selectedFile.getName();
+            btn_pilihGambar.setText(selectedFileName);
         }
     }//GEN-LAST:event_btn_pilihGambarActionPerformed
 
