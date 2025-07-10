@@ -2637,20 +2637,18 @@ public class HomeAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_bcari_promo2ActionPerformed
 
     private void bsave_ppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsave_ppActionPerformed
-        String idProdukPromo =  tidpp.getText();
         String idProduk2 =  tid_produk2.getText();
         String idPromo2 =  tid_promo2.getText();
 
-        if(idProdukPromo.isEmpty() || idProduk2.isEmpty() || idPromo2.isEmpty()){
+        if(idProduk2.isEmpty() || idPromo2.isEmpty()){
             JOptionPane.showMessageDialog(this, "Semua field harus diisi","Peringatan",JOptionPane.WARNING_MESSAGE);
         }
         try {
-            String sql = "INSERT INTO product_promotions (id, product_id, promo_id) VALUES (?,?,?)";
+            String sql = "INSERT INTO product_promotions (product_id, promo_id) VALUES (?,?)";
             PreparedStatement st = conn.prepareStatement(sql);
 
-            st.setString(1, idProdukPromo);
-            st.setString(2, idProduk2);
-            st.setString(3, idPromo2);
+            st.setString(1, idProduk2);
+            st.setString(2, idPromo2);
 
             st.executeUpdate();
             JOptionPane.showMessageDialog(this, "Data Produk Promo berhasil disimpan");
