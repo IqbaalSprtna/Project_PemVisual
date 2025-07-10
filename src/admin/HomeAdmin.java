@@ -2532,7 +2532,7 @@ public class HomeAdmin extends javax.swing.JFrame {
         tpot_harga.setText("");
 
         ttd.setDate(null);
-        ttd.setDate(null);
+        ttb.setDate(null);
         cmbStatus.setSelectedItem("");
         // TODO add your handling code here:
     }//GEN-LAST:event_bclearActionPerformed
@@ -2819,8 +2819,8 @@ public class HomeAdmin extends javax.swing.JFrame {
             rbRole1.setSelected(false);
             rbRole2.setSelected(true);
         }
-        tNoHpPelanggan.setText(d);
-        tAlamatPelanggan.setText(e);
+        tNoHpPelanggan.setText(e);
+        tAlamatPelanggan.setText(d);
         
         btnRegister.setEnabled(false);
     }//GEN-LAST:event_tblCustomerMouseClicked
